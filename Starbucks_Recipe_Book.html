@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Starbucks Recipe Book</title>
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--ink:#1e1e1e;--mute:#6b6b6b;--accent:#00704a;--chip:#e7efe9;--line:#e5e0d8}
+@media (prefers-color-scheme:dark){:root{--bg:#141614;--card:#1d201e;--ink:#ecece8;--mute:#a3a7a2;--accent:#4fbf8b;--chip:#25302a;--line:#2c312d}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:28px 16px 8px;max-width:1100px;margin:auto}h1{margin:0;font-size:28px;color:var(--accent)}header p{color:var(--mute);margin:4px 0 0}
+.bar{position:sticky;top:0;background:var(--bg);padding:12px 16px;max-width:1100px;margin:auto;z-index:2;border-bottom:1px solid var(--line)}
+input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:15px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.chips button{border:0;padding:6px 12px;border-radius:99px;background:var(--chip);color:var(--ink);cursor:pointer;font-size:13px}
+.chips button.on{background:var(--accent);color:#fff}
+main{max-width:1100px;margin:auto;padding:16px;display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.card h3{margin:0 0 2px;font-size:17px}.cat{font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+ul{padding-left:18px;margin:8px 0}li{margin:2px 0}.how{color:var(--mute);font-size:14px;margin:0}
+.ref{max-width:1100px;margin:auto;padding:0 16px 8px}.ref .card{margin-top:12px}table{border-collapse:collapse;width:100%;font-size:14px}.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+input{font-size:16px!important}
+@media(max-width:600px){header h1{font-size:22px}td,th{padding:5px 4px;font-size:13px}.card{padding:12px}}td,th{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+footer{max-width:1100px;margin:auto;padding:16px;color:var(--mute);font-size:13px}
+</style></head><body>
+<header><h1>Starbucks Recipe Book</h1><p>Home copycat versions of the menu. All recipes are for a <b>Grande (16 oz / 473 ml)</b> unless stated. Unofficial — Starbucks' own builds and ingredients vary by country and change over time.</p></header>
+<div class="ref">
+<div class="card"><h3>Size & build chart</h3>
+<div class="tw"><table><tr><th></th><th>Short 8oz</th><th>Tall 12oz</th><th>Grande 16oz</th><th>Venti hot 20oz</th><th>Venti iced 24oz</th></tr>
+<tr><td>Espresso shots (latte)</td><td>1</td><td>2</td><td>2</td><td>3</td><td>3</td></tr>
+<tr><td>Espresso shots (Americano)</td><td>1</td><td>2</td><td>3</td><td>4</td><td>4</td></tr>
+<tr><td>Syrup pumps (hot)</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6 (iced)</td></tr>
+<tr><td>Shaken espresso shots</td><td>–</td><td>2</td><td>3</td><td>–</td><td>4</td></tr>
+<tr><td>Cold brew syrup pumps</td><td>–</td><td>1</td><td>2</td><td>–</td><td>3</td></tr></table></div>
+<p class="how">1 syrup pump ≈ 7.5 ml (½ tbsp). Sauce pumps (mocha, white mocha, pumpkin) are thicker — use about 1 tbsp each. 1 shot ≈ 30 ml espresso (or 60 ml very strong coffee / Moka pot).</p></div>
+<div class="card"><h3>Frappuccino size chart</h3>
+<div class="tw"><table><tr><th></th><th>Tall 12oz</th><th>Grande 16oz</th><th>Venti 24oz</th></tr>
+<tr><td colspan="4"><b>Coffee Frappuccino</b> (Coffee, Caramel, Mocha, Java Chip, Caramel Ribbon Crunch, White Choc Mocha, Espresso)</td></tr>
+<tr><td>Milk</td><td>to 1st line</td><td>to 1st line</td><td>to 1st line</td></tr>
+<tr><td>Frappuccino Roast (coffee) pumps</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>Coffee base pumps</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>Syrup / sauce pumps</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>Espresso shots (Espresso Frapp only)</td><td>1</td><td>2</td><td>3</td></tr>
+<tr><td colspan="4"><b>Crème Frappuccino — no coffee</b> (Vanilla Bean, Strawberry, Double Choc Chip, Matcha, Chai)</td></tr>
+<tr><td>Milk</td><td>to 1st line</td><td>to 1st line</td><td>to 1st line</td></tr>
+<tr><td>Crème base pumps</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>Syrup / sauce / powder</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>Ice</td><td colspan="3">Fill cup to the top with ice, then blend</td></tr></table></div>
+<p class="how">Coffee base vs Crème base: same idea (sweetener + thickener), but the Crème base has no coffee so kids or decaf customers can have it. Frappuccinos have no Short or hot Venti. Check counts against your store's recipe cards.</p></div></div>
+<div class="bar"><input id="q" placeholder="Search drinks or ingredients… (e.g. caramel, oat, pumpkin)"><div class="chips" id="chips"></div></div>
+<main id="list"></main>
+<footer>Tip: whole milk steams best for latte art; oat (barista edition) is the best non-dairy foamer. Xanthan gum (¼ tsp) gives Frappuccinos the smooth, non-separating texture.</footer>
+<script>
+const D=[
+// HOT ESPRESSO
+["Caffè Latte","Hot Espresso",["2 espresso shots","~400 ml milk, steamed to 60–65°C","Thin layer of foam"],"Pull shots into cup, pour steamed milk, finish with 1 cm foam."],
+["Cappuccino","Hot Espresso",["2 espresso shots","~250 ml milk, steamed with lots of foam"],"Aerate longer for thick foam. Cup should feel light — about half foam."],
+["Flat White","Hot Espresso",["3 ristretto shots","Whole milk, velvety microfoam"],"Ristretto = short pull (~20 ml each). Pour microfoam and finish with a white dot."],
+["Caffè Americano","Hot Espresso",["3 espresso shots","Hot water to fill"],"Water first, then shots on top to keep the crema."],
+["Espresso Macchiato","Hot Espresso",["2 espresso shots (doppio)","1 spoon of milk foam"],"Mark the shots with a dollop of foam."],
+["Espresso Con Panna","Hot Espresso",["2 espresso shots","Dollop of whipped cream"],"Top the shots with whipped cream."],
+["Cortado","Hot Espresso",["3 ristretto shots","Equal amount of steamed whole milk, little foam"],"Served short (~8 oz)."],
+["Caramel Macchiato","Hot Espresso",["3 pumps vanilla syrup","Steamed milk","2 espresso shots","Caramel sauce"],"Vanilla in cup → steamed milk → pour shots on top through foam → caramel crosshatch + circle."],
+["Vanilla Latte","Hot Espresso",["4 pumps vanilla syrup","2 shots","Steamed milk"],"Syrup in cup, shots, then milk."],
+["Caramel Latte","Hot Espresso",["4 pumps caramel syrup","2 shots","Steamed milk"],"Same as a vanilla latte with caramel syrup."],
+["Hazelnut Latte","Hot Espresso",["4 pumps hazelnut syrup","2 shots","Steamed milk"],"Syrup, shots, milk."],
+["Caffè Mocha","Hot Espresso",["4 pumps mocha sauce","2 shots","Steamed milk","Whipped cream"],"Mix sauce and shots first so it dissolves, add milk, top with whip."],
+["White Chocolate Mocha","Hot Espresso",["4 pumps white mocha sauce","2 shots","Steamed milk","Whipped cream"],"Stir sauce into shots, add milk, whip."],
+["Cinnamon Dolce Latte","Hot Espresso",["4 pumps cinnamon dolce syrup","2 shots","Steamed milk","Whipped cream","Cinnamon sugar topping"],"Build like a latte, whip, sprinkle cinnamon sugar."],
+["Toffee Nut Latte","Hot Espresso",["4 pumps toffee nut syrup","2 shots","Steamed milk","Whip + chopped toffee"],"Holiday classic."],
+["Honey Oat / Almond Flat White","Hot Espresso",["3 blonde ristretto shots","3 pumps honey blend (honey + hot water 1:1)","Oat or almond milk"],"Honey in cup, shots, steamed non-dairy milk."],
+["Blonde Vanilla Latte","Hot Espresso",["4 pumps vanilla","2 blonde espresso shots","Steamed milk"],"Blonde roast = lighter, sweeter espresso."],
+["Pumpkin Spice Latte","Seasonal",["4 pumps pumpkin spice sauce","2 shots","Steamed milk","Whipped cream","Pumpkin pie spice"],"Mix sauce + shots, add milk, whip, dust with spice."],
+["Apple Crisp Oatmilk Macchiato","Seasonal",["3 pumps apple brown sugar syrup","Steamed oat milk","2 blonde shots on top","Spiced apple drizzle (caramel + cinnamon)"],"Built upside-down like a caramel macchiato."],
+["Peppermint Mocha","Seasonal",["4 pumps mocha sauce","3 pumps peppermint syrup","2 shots","Steamed milk","Whip + chocolate curls"],"Christmas favourite. Venti: 4 mocha / 4 peppermint."],
+["Chestnut Praline Latte","Seasonal",["4 pumps chestnut praline syrup","2 shots","Steamed milk","Whip + praline crumbs"],"Holiday."],
+["Caramel Brulée Latte","Seasonal",["4 pumps caramel brulée sauce","2 shots","Steamed milk","Whip + burnt sugar topping"],"Holiday."],
+["Gingerbread Latte","Seasonal",["4 pumps gingerbread syrup","2 shots","Steamed milk","Whip + nutmeg"],"UK holiday menu."],
+["Iced Pumpkin Cream Chai","Seasonal",["Chai concentrate to 1st line (~180 ml)","Milk to 2nd line (~120 ml)","Ice","Pumpkin cream cold foam","Pumpkin spice"],"Chai + milk over ice, float cold foam, dust spice."],
+["Pumpkin Cream Cold Brew","Seasonal",["2 pumps vanilla","Cold brew (~300 ml)","Ice","Pumpkin cream cold foam","Pumpkin spice"],"Vanilla + cold brew over ice, top with foam."],
+// ICED ESPRESSO
+["Iced Latte","Iced Espresso",["2 shots","Cold milk","Ice"],"Milk + ice, shots on top."],
+["Iced Americano","Iced Espresso",["3 shots","Cold water","Ice"],"Water + ice, shots on top."],
+["Iced Caramel Macchiato","Iced Espresso",["3 pumps vanilla","Milk","Ice","2 shots on top","Caramel drizzle"],"Vanilla, milk, ice, shots poured slowly on top, caramel crosshatch."],
+["Iced Vanilla Latte","Iced Espresso",["4 pumps vanilla","2 shots","Milk","Ice"],"Stir well."],
+["Iced Mocha","Iced Espresso",["4 pumps mocha","2 shots","Milk","Ice","Whipped cream"],"Mix sauce into hot shots first."],
+["Iced White Chocolate Mocha","Iced Espresso",["4 pumps white mocha","2 shots","Milk","Ice","Whipped cream"],"Mix sauce into hot shots first."],
+["Iced Shaken Espresso","Iced Espresso",["3 shots","4 pumps classic syrup","Ice","Splash of 2% milk"],"Shake shots, syrup and ice hard for 10 s, pour, top with milk."],
+["Iced Brown Sugar Oatmilk Shaken Espresso","Iced Espresso",["3 blonde shots","4 pumps brown sugar syrup","Ice","Oat milk to top","Pinch of cinnamon"],"Shake shots + syrup + cinnamon with ice, pour, top with oat milk."],
+["Iced Chocolate Almondmilk Shaken Espresso","Iced Espresso",["3 blonde shots","3 scoops chocolate malt powder (or 1½ tbsp cocoa + 1 tsp malt + sugar)","Ice","Almond milk"],"Shake shots + powder + ice, top with almond milk."],
+["Iced Toasted Vanilla Oatmilk Shaken Espresso","Iced Espresso",["3 blonde shots","4 pumps toasted vanilla syrup","Ice","Oat milk"],"Shake and top with oat milk."],
+["Iced Flat White","Iced Espresso",["3 ristretto shots","Whole milk","Ice"],"Milk + ice, shots on top."],
+// COLD BREW
+["Cold Brew","Cold Brew",["Cold brew concentrate (~150 ml)","Water (~150 ml)","Ice"],"Concentrate: 100 g coarse ground coffee + 1 L cold water, steep 20 h, strain. Dilute 1:1."],
+["Vanilla Sweet Cream Cold Brew","Cold Brew",["2 pumps vanilla","Cold brew","Ice","Splash vanilla sweet cream (~45 ml)"],"Cream cascades on top — don't stir."],
+["Salted Caramel Cream Cold Brew","Cold Brew",["2 pumps caramel syrup","Cold brew","Ice","Salted caramel cold foam"],"Top with foam, pinch of sea salt."],
+["Chocolate Cream Cold Brew","Cold Brew",["2 pumps vanilla","Cold brew","Ice","Chocolate cream cold foam (sweet cream + 1 tbsp chocolate malt powder)"],"Froth foam and float on top."],
+["Cold Brew with Cold Foam","Cold Brew",["Cold brew","Ice","Vanilla sweet cream cold foam"],"Froth sweet cream until thick, spoon on."],
+["Nitro-style Cold Brew","Cold Brew",["Cold brew, no ice"],"At home: shake hard in a sealed jar or use a cream whipper with N2O for a creamy head."],
+// FRAPPUCCINO
+["Coffee Frappuccino","Frappuccino – Coffee",["240 ml ice (1 cup)","120 ml milk","60 ml strong coffee / 2 chilled shots","2–3 tbsp classic syrup","¼ tsp xanthan gum"],"Blend 30–40 s until smooth. This is the base for all coffee Fraps."],
+["Caramel Frappuccino","Frappuccino – Coffee",["Coffee Frapp base","3 pumps caramel syrup","Whip + caramel drizzle"],"Blend, cup lined with caramel, whip, drizzle."],
+["Mocha Frappuccino","Frappuccino – Coffee",["Coffee Frapp base","3 pumps mocha sauce","Whipped cream"],"Blend and top with whip."],
+["Java Chip Frappuccino","Frappuccino – Coffee",["Coffee Frapp base","3 pumps mocha","2 tbsp chocolate chips","Whip + mocha drizzle"],"Blend chips in with everything."],
+["Caramel Ribbon Crunch Frappuccino","Frappuccino – Coffee",["Coffee Frapp base","3 pumps dark caramel sauce","Caramel in cup","Whip, caramel, crunchy caramel-sugar topping"],"Layer caramel in cup, blend, top."],
+["White Chocolate Mocha Frappuccino","Frappuccino – Coffee",["Coffee Frapp base","3 pumps white mocha","Whipped cream"],"Blend and top."],
+["Espresso Frappuccino","Frappuccino – Coffee",["Coffee Frapp base","+1 espresso shot blended in"],"Stronger, less sweet."],
+["Vanilla Bean Crème Frappuccino","Frappuccino – Crème (no coffee)",["240 ml ice","160 ml milk","3 tbsp vanilla bean powder (or 2 tbsp sugar + ½ tsp vanilla bean paste)","¼ tsp xanthan gum","Whip"],"No coffee. Blend smooth."],
+["Strawberry Crème Frappuccino","Frappuccino – Crème (no coffee)",["Crème base (above)","3 tbsp strawberry purée (also in cup)","Whipped cream"],"Swirl purée in cup, blend rest."],
+["Double Chocolaty Chip Crème Frappuccino","Frappuccino – Crème (no coffee)",["Crème base","3 pumps mocha","2 tbsp choc chips","Whip + mocha drizzle"],"No coffee."],
+["Matcha Crème Frappuccino","Frappuccino – Crème (no coffee)",["Crème base","2 tsp matcha + 1 tbsp sugar","Whipped cream"],"Blend smooth."],
+["Chai Crème Frappuccino","Frappuccino – Crème (no coffee)",["240 ml ice","120 ml chai concentrate","60 ml milk","¼ tsp xanthan","Whip + cinnamon"],"Blend."],
+// REFRESHERS
+["Strawberry Açaí Refresher","Refreshers",["150 ml white grape juice","2 tbsp strawberry purée","Pinch of açaí powder (optional)","150 ml water","Ice","Freeze-dried strawberries"],"Shake with ice. For caffeine add a green tea bag steeped in the water."],
+["Strawberry Açaí Lemonade","Refreshers",["Strawberry Açaí base","Lemonade instead of water","Ice + strawberries"],"Shake."],
+["Pink Drink","Refreshers",["Strawberry Açaí base","Coconut milk instead of water","Ice + strawberries"],"Shake well."],
+["Mango Dragonfruit Refresher","Refreshers",["150 ml white grape juice","2 tbsp mango purée","1 tsp pink pitaya (dragon fruit) powder","150 ml water","Ice + freeze-dried dragonfruit"],"Shake with ice."],
+["Dragon Drink","Refreshers",["Mango Dragonfruit base","Coconut milk instead of water"],"Shake."],
+["Mango Dragonfruit Lemonade","Refreshers",["Mango Dragonfruit base","Lemonade instead of water"],"Shake."],
+["Pineapple Passionfruit Refresher","Refreshers",["150 ml pineapple juice","2 tbsp passionfruit purée","150 ml water","Ice + pineapple pieces"],"Shake."],
+["Paradise Drink","Refreshers",["Pineapple Passionfruit base","Coconut milk instead of water"],"Shake."],
+// TEA
+["Chai Tea Latte","Tea",["4 pumps chai concentrate (~120 ml)","Steamed milk to fill"],"At home use a chai concentrate 1:1 with milk; dust with cinnamon."],
+["Dirty Chai","Tea",["Chai latte","+1 or 2 espresso shots"],"Add shots to a chai latte."],
+["Iced Chai Tea Latte","Tea",["Chai concentrate (~180 ml)","Milk (~120 ml)","Ice"],"Stir."],
+["Matcha Tea Latte","Tea",["2 tsp matcha","Sweetener: 3 pumps classic or 1 tbsp sugar","Steamed milk"],"Whisk matcha with a splash of hot milk into a paste first."],
+["Iced Matcha Latte","Tea",["2 tsp matcha","3 pumps classic syrup","Milk","Ice"],"Shake matcha + milk + syrup, pour over ice."],
+["London Fog Tea Latte","Tea",["2 Earl Grey bags","4 pumps vanilla","Half hot water, half steamed milk"],"Steep 3–4 min in the water, add vanilla and milk."],
+["Honey Citrus Mint Tea (Medicine Ball)","Tea",["1 Jade Citrus Mint bag (green tea + lemongrass + mint)","1 Peach Tranquility bag (peach herbal)","Half hot water, half steamed lemonade","2 tbsp honey"],"Steep bags 3 min, stir in honey."],
+["Iced Black / Green Tea","Tea",["Double-strength brewed tea (~200 ml)","Ice","3 pumps classic (optional)"],"Shake with ice."],
+["Iced Passion Tango Tea","Tea",["Hibiscus herbal tea, double strength","Ice","3 pumps classic (optional)"],"Shake with ice."],
+["Iced Passion Tango Tea Lemonade","Tea",["Half Passion Tango tea","Half lemonade","Ice"],"Shake."],
+["Iced Peach Green Tea","Tea",["Green tea (~200 ml)","Peach juice/syrup (~60 ml)","Ice"],"Shake."],
+["Iced Green Tea Lemonade / Arnold Palmer","Tea",["Half green or black tea","Half lemonade","Ice"],"Shake."],
+// OTHER
+["Hot Chocolate","Other",["4 pumps mocha sauce","Steamed milk","Whip + mocha drizzle"],"Stir sauce in well."],
+["White Hot Chocolate","Other",["4 pumps white mocha","Steamed milk","Whipped cream"],"Stir sauce in well."],
+["Vanilla Crème (Steamer)","Other",["4 pumps vanilla","Steamed milk","Whipped cream"],"Kid-friendly, no caffeine."],
+["Caramel Apple Spice","Other",["Steamed apple juice","4 pumps cinnamon dolce","Whip + caramel drizzle"],"Steam juice like milk (no foam)."],
+["Pike Place / Filter Coffee","Other",["30 g medium-roast coffee","500 ml water at 93–96°C"],"Starbucks ratio: 2 tbsp (10 g) per 180 ml. French press: steep 4 min."],
+["Misto (Café au Lait)","Other",["Half brewed coffee","Half steamed milk"],"Simple and cheap."],
+// SYRUPS & TOPPINGS
+["Classic (simple) syrup","Syrups & Bases",["200 g sugar","200 ml water"],"Heat until dissolved. Keeps 3–4 weeks in fridge."],
+["Vanilla syrup","Syrups & Bases",["200 g sugar","200 ml water","1 tbsp vanilla extract"],"Dissolve sugar, cool, add vanilla."],
+["Caramel syrup","Syrups & Bases",["200 g sugar","200 ml hot water","Pinch of salt"],"Melt sugar dry until amber, carefully whisk in hot water."],
+["Caramel sauce (drizzle)","Syrups & Bases",["200 g sugar","90 g butter","120 ml double cream","½ tsp salt"],"Melt sugar to amber, whisk in butter then cream."],
+["Brown sugar syrup","Syrups & Bases",["200 g dark brown sugar","200 ml water","½ tsp cinnamon"],"Simmer 2 min."],
+["Cinnamon dolce syrup","Syrups & Bases",["100 g white + 100 g brown sugar","200 ml water","1 tsp cinnamon / 2 sticks","Splash vanilla"],"Simmer 5 min, strain."],
+["Mocha sauce","Syrups & Bases",["50 g cocoa","120 g sugar","180 ml water","Pinch salt, ½ tsp vanilla"],"Whisk and simmer 2–3 min until glossy."],
+["White mocha sauce","Syrups & Bases",["150 g white chocolate","200 g sweetened condensed milk","60 ml milk"],"Melt gently together."],
+["Pumpkin spice sauce","Syrups & Bases",["200 g condensed milk","80 g pumpkin purée","1½ tsp pumpkin pie spice","2 tbsp sugar, pinch salt"],"Simmer 5 min, cool, store 1 week."],
+["Apple brown sugar syrup","Syrups & Bases",["200 ml apple juice","150 g brown sugar","½ tsp cinnamon"],"Simmer 5 min."],
+["Toffee nut / hazelnut syrup","Syrups & Bases",["Brown sugar syrup","1 tsp toffee/hazelnut extract or 2 tbsp toasted nuts steeped"],"Strain if using nuts."],
+["Peppermint syrup","Syrups & Bases",["Classic syrup 200 ml","½ tsp peppermint extract"],"Stir in when cool."],
+["Vanilla sweet cream","Syrups & Bases",["120 ml double cream","80 ml semi-skimmed milk","3 tbsp vanilla syrup"],"Stir. Base for all cold foams."],
+["Vanilla sweet cream cold foam","Syrups & Bases",["~60 ml vanilla sweet cream"],"Froth with a handheld frother 20–30 s until thick but pourable."],
+["Pumpkin cream cold foam","Syrups & Bases",["3 tbsp double cream","2 tbsp milk","1 tbsp pumpkin sauce","1 tbsp vanilla syrup"],"Froth until thick."],
+["Salted caramel cold foam","Syrups & Bases",["60 ml vanilla sweet cream","1 tbsp caramel syrup","Pinch of salt"],"Froth until thick."],
+["Whipped cream","Syrups & Bases",["250 ml double cream","3 tbsp vanilla syrup"],"Whip to soft peaks (or use a cream whipper)."],
+["Honey blend","Syrups & Bases",["Honey","Hot water 1:1"],"Stir."],
+];
+const cats=["All",...new Set(D.map(d=>d[1]))];let cur="All";
+const chips=document.getElementById("chips"),list=document.getElementById("list"),q=document.getElementById("q");
+cats.forEach(c=>{const b=document.createElement("button");b.textContent=c;b.onclick=()=>{cur=c;render()};chips.appendChild(b)});
+function render(){const t=q.value.toLowerCase();[...chips.children].forEach(b=>b.classList.toggle("on",b.textContent===cur));
+list.innerHTML=D.filter(d=>(cur==="All"||d[1]===cur)&&(d.join(" ").toLowerCase().includes(t))).map(d=>`<div class="card"><div class="cat">${d[1]}</div><h3>${d[0]}</h3><ul>${d[2].map(i=>`<li>${i}</li>`).join("")}</ul><p class="how">${d[3]}</p></div>`).join("")||"<p>No match.</p>"}
+q.oninput=render;render();
+</script></body></html>

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Practice Till</title>
+<style>
+:root{--bg:#eef0ee;--panel:#fff;--ink:#1c1f1d;--mute:#6a706c;--acc:#1f6f5c;--acc2:#e9f3ef;--line:#dde2de;--warn:#b4442f;--ok:#2d8a4e;--btn:#f3f5f3}
+@media (prefers-color-scheme:dark){:root{--bg:#101211;--panel:#1a1d1b;--ink:#e9ece9;--mute:#9aa29c;--acc:#4cbf9c;--acc2:#1f2b26;--line:#2b302d;--btn:#232825}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.35 -apple-system,Segoe UI,Roboto,sans-serif}
+.top{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.top b{color:var(--acc);font-size:17px}.top .sp{flex:1}
+.wrap{display:grid;grid-template-columns:1.25fr 1fr .9fr;gap:10px;padding:10px;height:calc(100vh - 54px)}
+#mbar{display:none}.p{scroll-margin-top:80px}
+@media(max-width:980px){.wrap{grid-template-columns:1fr;height:auto;padding-bottom:80px}.p{overflow:visible}
+#mbar{display:flex;position:fixed;left:0;right:0;bottom:0;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);z-index:5;align-items:center}
+#mbar b{flex:1;font-size:17px}.top{position:sticky;top:0;z-index:4}}
+@media(max-width:480px){.drinks{grid-template-columns:1fr 1fr}button{padding:9px 10px}.step span{min-width:90px}}
+input{font-size:16px}
+.p{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;overflow:auto}
+h4{margin:6px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.row{display:flex;flex-wrap:wrap;gap:6px}
+button{font:inherit;border:1px solid var(--line);background:var(--btn);color:var(--ink);border-radius:8px;padding:8px 10px;cursor:pointer}
+button:hover{border-color:var(--acc)}button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+button.big{padding:12px;font-weight:600}button.pri{background:var(--acc);color:#fff;border-color:var(--acc)}
+button.dang{color:var(--warn)}button:disabled{opacity:.35;cursor:not-allowed}
+.drinks{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px}
+.drinks button{min-height:52px;text-align:left;font-size:13px}.drinks small{display:block;color:var(--mute);font-size:11px}
+.drinks button.on small{color:#e6f5ef}
+.step{display:flex;align-items:center;gap:6px;margin:4px 0}.step span{min-width:110px}.step .n{min-width:26px;text-align:center;font-weight:700}
+.label{font-family:ui-monospace,Menlo,Consolas,monospace;background:#fffef6;color:#111;border:1px dashed #999;border-radius:6px;padding:10px 12px;margin:6px 0;font-size:13px;line-height:1.5}
+.label .h{display:flex;justify-content:space-between;font-weight:700;border-bottom:1px solid #ccc;margin-bottom:4px}
+.label .l{display:grid;grid-template-columns:62px 1fr}.label .l i{font-style:normal;color:#777}
+.item{border-bottom:1px solid var(--line);padding:6px 0;display:flex;gap:8px}.item div{flex:1}.item small{color:var(--mute)}
+.tot{display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin:8px 0}
+.msg{padding:8px 10px;border-radius:8px;margin:6px 0;font-size:13px}.msg.ok{background:#dff3e5;color:#1d5a33}.msg.bad{background:#f8e1dc;color:#7a2a1b}.msg.info{background:var(--acc2)}
+input{font:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--btn);color:var(--ink);width:100%}
+.muted{color:var(--mute);font-size:12px}
+</style></head><body>
+<div class="top"><b>Practice Till</b><span class="muted">Training only · practice prices</span><span class="sp"></span>
+<button id="pBtn" class="pri">🎯 Practice order</button><span id="score" class="muted"></span></div>
+<div id="mbar"><b id="mtot">£0.00 · 0 items</b><button id="mDrinks">Drinks</button><button class="pri" id="mOrder">Order / Pay</button></div>
+<div class="wrap">
+<!-- LEFT: size + drinks -->
+<div class="p" id="leftP">
+ <h4>1 · Size</h4><div class="row" id="sizes"></div>
+ <h4>Hot / Iced</h4><div class="row" id="temps"></div>
+ <h4>2 · Drink</h4><div class="row" id="cats" style="margin-bottom:6px"></div>
+ <div class="drinks" id="drinks"></div>
+</div>
+<!-- MIDDLE: modifiers in label order -->
+<div class="p" id="mods">
+ <div id="target"></div>
+ <h4>Decaf</h4><div class="row" id="decaf"></div>
+ <h4>Shots</h4><div id="shots"></div>
+ <h4>Syrup / Sauce</h4><div id="syrups"></div>
+ <h4>Milk</h4><div class="row" id="milks"></div>
+ <h4>Custom</h4><div class="row" id="custom"></div>
+ <h4>Cup label preview</h4><div id="preview"></div>
+ <div class="row" style="margin-top:6px"><button class="big pri" id="addBtn" style="flex:1">Add to order</button><button class="big" id="checkBtn" style="display:none">Check</button><button id="resetBtn">Reset drink</button></div>
+</div>
+<!-- RIGHT: order + pay -->
+<div class="p" id="orderP">
+ <h4>Order</h4>
+ <input id="cname" placeholder="Customer name (prints on label)">
+ <div class="row" style="margin:6px 0" id="dine"></div>
+ <div id="order"></div>
+ <div class="tot"><span>Total</span><span id="total">£0.00</span></div>
+ <h4>Payment</h4>
+ <div class="row" id="cashBtns"></div>
+ <div class="row" style="margin-top:6px"><button class="big" id="cardBtn" style="flex:1">💳 Card / Contactless</button><button class="big" id="appBtn" style="flex:1">📱 App</button></div>
+ <div id="payMsg"></div>
+ <div class="row" style="margin-top:6px"><button class="dang" id="voidBtn">Void order</button></div>
+ <h4>Printed labels</h4><div id="labels"></div>
+</div>
+</div>
+<script>
+const HOT=["Short","Tall","Grande","Venti"], ICE=["Tall","Grande","Venti"];
+const SZ={Short:"S",Tall:"T",Grande:"G",Venti:"V"};
+// shots by [Short,Tall,Grande,Venti] (hot) or [Tall,Grande,Venti] (iced)
+const S={latte:[1,2,2,3],am:[1,2,3,4],rist:[2,2,3,3],dop:[1,2,2,2],none:[0,0,0,0],iLatte:[2,2,3],iAm:[2,3,4],shaken:[2,3,4],iRist:[2,3,3],zero:[0,0,0],frapE:[1,2,3]};
+const P={hot:[2,3,4,5],mac:[1,2,3,4],iced:[3,4,6],iMac:[2,3,4],cb:[1,2,3],frap:[2,3,4],none:[0,0,0,0],noneI:[0,0,0]};
+const PRICE={am:[2.55,2.90,3.25,3.55],basic:[2.95,3.30,3.70,4.00],flav:[3.35,3.70,4.10,4.40],esp:[2.10,2.40,2.40,2.40],tea:[2.60,2.95,3.35,3.65],cb:[3.20,3.55,3.90],frap:[3.95,4.35,4.75],ref:[3.30,3.65,4.00],choc:[2.80,3.15,3.55,3.85]};
+// name, short code, cat, temp, shotsKey, syrup, pumpsKey, default milk, price, default customs
+const D=[
+["Caffè Latte","LTE","Espresso","h","latte","","none","2%","basic",[]],
+["Cappuccino","CAP","Espresso","h","latte","","none","2%","basic",["Extra foam"]],
+["Flat White","FW","Espresso","h","rist","","none","Whole","basic",[]],
+["Americano","AM","Espresso","h","am","","none","None","am",[]],
+["Espresso","ESP","Espresso","h","dop","","none","None","esp",[]],
+["Espresso Macchiato","EM","Espresso","h","dop","","none","None","esp",[]],
+["Caramel Macchiato","CM","Espresso","h","latte","Vanilla","mac","2%","flav",["Caramel drizzle"]],
+["Vanilla Latte","VL","Espresso","h","latte","Vanilla","hot","2%","flav",[]],
+["Caramel Latte","CL","Espresso","h","latte","Caramel","hot","2%","flav",[]],
+["Hazelnut Latte","HL","Espresso","h","latte","Hazelnut","hot","2%","flav",[]],
+["Caffè Mocha","M","Espresso","h","latte","Mocha","hot","2%","flav",["Whip"]],
+["White Choc Mocha","WM","Espresso","h","latte","White Mocha","hot","2%","flav",["Whip"]],
+["Cinnamon Dolce Latte","CDL","Espresso","h","latte","Cinnamon Dolce","hot","2%","flav",["Whip"]],
+["Pumpkin Spice Latte","PSL","Seasonal","h","latte","Pumpkin","hot","2%","flav",["Whip"]],
+["Peppermint Mocha","PM","Seasonal","h","latte","Mocha","hot","2%","flav",["Whip"]],
+["Toffee Nut Latte","TNL","Seasonal","h","latte","Toffee Nut","hot","2%","flav",["Whip"]],
+["Iced Latte","LTE","Iced","i","iLatte","","noneI","2%","basic",[]],
+["Iced Americano","AM","Iced","i","iAm","","noneI","None","am",[]],
+["Iced Caramel Macchiato","CM","Iced","i","iLatte","Vanilla","iMac","2%","flav",["Caramel drizzle"]],
+["Iced Vanilla Latte","VL","Iced","i","iLatte","Vanilla","iced","2%","flav",[]],
+["Iced Mocha","M","Iced","i","iLatte","Mocha","iced","2%","flav",["Whip"]],
+["Iced White Mocha","WM","Iced","i","iLatte","White Mocha","iced","2%","flav",["Whip"]],
+["Iced Shaken Espresso","ISE","Iced","i","shaken","Classic","iced","2%","flav",[]],
+["Brown Sugar Oat Shaken","BSOSE","Iced","i","shaken","Brown Sugar","iced","Oat","flav",[]],
+["Iced Flat White","FW","Iced","i","iRist","","noneI","Whole","basic",[]],
+["Cold Brew","CB","Cold Brew","i","zero","","noneI","None","cb",[]],
+["Vanilla Sweet Cream CB","VSCCB","Cold Brew","i","zero","Vanilla","cb","None","cb",["Sweet cream"]],
+["Salted Caramel Cream CB","SCCB","Cold Brew","i","zero","Caramel","cb","None","cb",["Cold foam"]],
+["Pumpkin Cream CB","PCCB","Seasonal","i","zero","Vanilla","cb","None","cb",["Cold foam"]],
+["Coffee Frappuccino","CF","Frapp Coffee","i","zero","Frapp base","frap","Whole","frap",[]],
+["Caramel Frappuccino","CRF","Frapp Coffee","i","zero","Caramel","frap","Whole","frap",["Whip","Caramel drizzle"]],
+["Mocha Frappuccino","MF","Frapp Coffee","i","zero","Mocha","frap","Whole","frap",["Whip"]],
+["Java Chip Frappuccino","JCF","Frapp Coffee","i","zero","Mocha","frap","Whole","frap",["Whip","Choc chips"]],
+["Strawberry Crème Frapp","SCF","Frapp Crème","i","zero","Strawberry","frap","Whole","frap",["Whip"]],
+["Vanilla Bean Crème Frapp","VBCF","Frapp Crème","i","zero","Vanilla Bean","frap","Whole","frap",["Whip"]],
+["Double Choc Chip Crème","DCC","Frapp Crème","i","zero","Mocha","frap","Whole","frap",["Whip","Choc chips"]],
+["Matcha Crème Frapp","MCF","Frapp Crème","i","zero","Matcha","frap","Whole","frap",["Whip"]],
+["Chai Crème Frapp","CCF","Frapp Crème","i","zero","Chai","frap","Whole","frap",["Whip"]],
+["Espresso Frappuccino","EF","Frapp Coffee","i","frapE","Frapp base","frap","Whole","frap",[]],
+["Chai Latte","CT","Tea","h","none","Chai","hot","2%","tea",[]],
+["Iced Chai Latte","CT","Tea","i","zero","Chai","iced","2%","tea",[]],
+["Matcha Latte","MT","Tea","h","none","Classic","hot","2%","tea",[]],
+["Iced Matcha Latte","MT","Tea","i","zero","Classic","iced","2%","tea",[]],
+["London Fog","LF","Tea","h","none","Vanilla","hot","2%","tea",[]],
+["Brewed Tea","TEA","Tea","h","none","","none","None","tea",[]],
+["Iced Tea Lemonade","ITL","Tea","i","zero","","noneI","None","ref",[]],
+["Strawberry Açaí","SA","Refreshers","i","zero","","noneI","None","ref",[]],
+["Pink Drink","PD","Refreshers","i","zero","","noneI","Coconut","ref",[]],
+["Mango Dragonfruit","MD","Refreshers","i","zero","","noneI","None","ref",[]],
+["Hot Chocolate","HC","Other","h","none","Mocha","hot","2%","choc",["Whip"]],
+["Steamer","STM","Other","h","none","Vanilla","hot","2%","choc",[]],
+];
+const SYRUPS=["Vanilla","Caramel","Hazelnut","Classic","Brown Sugar","Cinnamon Dolce","Toffee Nut","Peppermint","Mocha","White Mocha","Pumpkin","SF Vanilla"];
+const SYR_CODE={Vanilla:"V","SF Vanilla":"SFV",Caramel:"C",Hazelnut:"H",Classic:"CL","Brown Sugar":"BS","Cinnamon Dolce":"CD","Toffee Nut":"TN",Peppermint:"P",Mocha:"M","White Mocha":"WM",Pumpkin:"PS",Chai:"CH","Frapp base":"BASE",Strawberry:"STR"};
+const MILKS=["2%","Whole","Skimmed","Breve","Oat","Almond","Soy","Coconut","None"];
+const MILK_CODE={"2%":"","Whole":"W","Skimmed":"N","Breve":"B","Oat":"O","Almond":"A","Soy":"S","Coconut":"CO","None":""};
+const PLANT=["Oat","Almond","Soy","Coconut"];
+const CUSTOM=["Extra hot","Warm","Extra foam","No foam","Light foam","Whip","No whip","Caramel drizzle","Mocha drizzle","Cold foam","Sweet cream","Choc chips","Light ice","Extra ice","No ice","Upside down","Kids temp"];
+const CUS_CODE={"Extra hot":"XHOT","Warm":"WARM","Extra foam":"XFOAM","No foam":"NOFOAM","Light foam":"LTFOAM","Whip":"WHIP","No whip":"NOWHIP","Caramel drizzle":"CRML","Mocha drizzle":"MDRZ","Cold foam":"CFOAM","Sweet cream":"SCRM","Choc chips":"CHIP","Light ice":"LTICE","Extra ice":"XICE","No ice":"NOICE","Upside down":"UPSD","Kids temp":"KIDS"};
+const COST={shot:0.70,syrup:0.50,plant:0.40,"Cold foam":1.00,"Sweet cream":0.60,"Choc chips":0.40,"Caramel drizzle":0.30,"Mocha drizzle":0.30,Whip:0.30};
+
+let temp="h",size="Grande",cat="Espresso",cur=null,order=[],dine="Eat in",target=null,score={ok:0,n:0};
+const $=id=>document.getElementById(id);
+const sizesFor=t=>t==="h"?HOT:ICE;const si=()=>sizesFor(cur?cur.d[3]:temp).indexOf(size);
+const money=n=>"£"+n.toFixed(2);
+function defaults(d){const i=sizesFor(d[3]).indexOf(size);const syr={};if(d[5])syr[d[5]]=P[d[6]][i]||1;
+ return{d,decaf:"Regular",shots:S[d[4]][i],syr,milk:d[7],custom:new Set(d[9])}}
+const mob=()=>window.innerWidth<=980;const go=id=>{if(mob())document.getElementById(id).scrollIntoView({behavior:"smooth"})};
+function pick(d){if(d[3]==="i"&&size==="Short")size="Tall";temp=d[3];cur=defaults(d);renderAll();go("mods")}
+function setSize(s){size=s;if(cur){const keep=cur;cur=defaults(cur.d);cur.decaf=keep.decaf;cur.milk=keep.milk;cur.custom=keep.custom;
+ // keep extra shots / syrup deltas
+ const base=defaults(keep.d);}renderAll()}
+function price(it){const d=it.d,i=sizesFor(d[3]).indexOf(it.size||size);let p=PRICE[d[8]][d[3]==="i"&&PRICE[d[8]].length===4?i+1:i];
+ if(d[3]==="i"&&PRICE[d[8]].length===4)p+=0.20;
+ const base=defaults(d),extra=Math.max(0,it.shots-base.shots);p+=extra*COST.shot;
+ for(const k in it.syr)if(!(k in base.syr))p+=COST.syrup;
+ if(PLANT.includes(it.milk)&&!PLANT.includes(d[7]))p+=COST.plant;
+ it.custom.forEach(c=>{if(!base.custom.has(c)&&COST[c])p+=COST[c]});return p}
+function labelLines(it,sz){const d=it.d,base=defaults(d),L=[];
+ L.push(["DECAF",it.decaf==="Decaf"?"DECAF":it.decaf==="Half-caf"?"1/2 DECAF":""]);
+ L.push(["SHOTS",it.shots!==base.shots?it.shots+" SHOT":""]);
+ const sy=Object.entries(it.syr).filter(([k,v])=>base.syr[k]!==v).map(([k,v])=>v+" "+(SYR_CODE[k]||k.toUpperCase()));
+ const removed=Object.keys(base.syr).filter(k=>!(k in it.syr)).map(k=>"NO "+(SYR_CODE[k]||k));
+ L.push(["SYRUP",[...sy,...removed].join(" ")]);
+ L.push(["MILK",it.milk!==d[7]?(it.milk==="None"?"NO MILK":(MILK_CODE[it.milk]||it.milk.toUpperCase())):""]);
+ const cu=[...it.custom].filter(c=>!base.custom.has(c)).map(c=>CUS_CODE[c]);const rm=[...base.custom].filter(c=>!it.custom.has(c)).map(c=>"NO "+CUS_CODE[c]);
+ L.push(["CUSTOM",[...cu,...rm].join(" ")]);
+ L.push(["DRINK",SZ[sz]+" "+(d[3]==="i"&&!/^I|Frapp|Cold|Pink|Mango|Straw/.test(d[0])?"I":"")+d[1]]);return L}
+function labelHTML(it,sz,name,n){return `<div class="label"><div class="h"><span>${(name||"—").toUpperCase()}</span><span>${n||""}</span></div>${labelLines(it,sz).map(([k,v])=>`<div class="l"><i>${k}</i><span>${v||""}</span></div>`).join("")}<div class="muted" style="color:#666;margin-top:4px">${it.d[0]} · ${sz}${it.decaf!=="Regular"?" · "+it.decaf:""}</div></div>`}
+function btn(t,on,fn,dis){const b=document.createElement("button");b.textContent=t;if(on)b.classList.add("on");if(dis)b.disabled=true;b.onclick=fn;return b}
+function renderLeft(){const s=$("sizes");s.innerHTML="";HOT.forEach(z=>s.appendChild(btn(z,z===size,()=>setSize(z),(cur?cur.d[3]:temp)==="i"&&z==="Short")));
+ const t=$("temps");t.innerHTML="";[["h","Hot"],["i","Iced"]].forEach(([k,l])=>t.appendChild(btn(l,(cur?cur.d[3]:temp)===k,()=>{temp=k;if(k==="i"&&size==="Short")size="Tall";cur=null;renderAll()})));
+ const cats=[...new Set(D.map(d=>d[2]))];const c=$("cats");c.innerHTML="";cats.forEach(k=>c.appendChild(btn(k,k===cat,()=>{cat=k;renderLeft()})));
+ const g=$("drinks");g.innerHTML="";D.filter(d=>d[2]===cat).forEach(d=>{const b=btn("",cur&&cur.d===d,()=>pick(d));b.innerHTML=`${d[0]}<small>${d[3]==="h"?"Hot":"Iced"} · from ${money(PRICE[d[8]][0])}</small>`;g.appendChild(b)})}
+function renderMods(){const m=$("mods");const dis=!cur;
+ $("decaf").innerHTML="";["Regular","Half-caf","Decaf"].forEach(x=>$("decaf").appendChild(btn(x,cur&&cur.decaf===x,()=>{cur.decaf=x;renderAll()},dis)));
+ const sh=$("shots");sh.innerHTML="";if(cur){const r=document.createElement("div");r.className="step";r.innerHTML=`<span>Espresso shots</span>`;
+  r.appendChild(btn("−",0,()=>{cur.shots=Math.max(0,cur.shots-1);renderAll()}));const n=document.createElement("span");n.className="n";n.textContent=cur.shots;r.appendChild(n);
+  r.appendChild(btn("+",0,()=>{cur.shots++;renderAll()}));sh.appendChild(r)}else sh.innerHTML='<p class="muted">Pick a drink first.</p>';
+ const sy=$("syrups");sy.innerHTML="";if(cur){Object.keys(cur.syr).forEach(k=>{const r=document.createElement("div");r.className="step";r.innerHTML=`<span>${k}</span>`;
+   r.appendChild(btn("−",0,()=>{cur.syr[k]--;if(cur.syr[k]<=0)delete cur.syr[k];renderAll()}));const n=document.createElement("span");n.className="n";n.textContent=cur.syr[k];r.appendChild(n);
+   r.appendChild(btn("+",0,()=>{cur.syr[k]++;renderAll()}));r.appendChild(btn("✕",0,()=>{delete cur.syr[k];renderAll()}));sy.appendChild(r)});
+  const add=document.createElement("div");add.className="row";SYRUPS.filter(x=>!(x in cur.syr)).forEach(x=>add.appendChild(btn("+ "+x,0,()=>{cur.syr[x]=P[cur.d[3]==="h"?"hot":"iced"][si()]||1;renderAll()})));sy.appendChild(add)}
+ $("milks").innerHTML="";MILKS.forEach(x=>$("milks").appendChild(btn(x+(PLANT.includes(x)?" +40p":""),cur&&cur.milk===x,()=>{cur.milk=x;renderAll()},dis)));
+ $("custom").innerHTML="";CUSTOM.forEach(x=>{const iceOnly=/ice/i.test(x),hotOnly=/hot|Warm|foam$|Kids/.test(x)&&!/Cold/.test(x);
+  const bad=cur&&((iceOnly&&cur.d[3]==="h")||(hotOnly&&cur.d[3]==="i"));
+  $("custom").appendChild(btn(x,cur&&cur.custom.has(x),()=>{cur.custom.has(x)?cur.custom.delete(x):cur.custom.add(x);renderAll()},dis||bad))});
+ $("preview").innerHTML=cur?labelHTML(cur,size,$("cname").value,money(price(cur))):'<p class="muted">Label appears here.</p>';
+ $("addBtn").disabled=dis;$("checkBtn").style.display=target?"":"none";$("checkBtn").disabled=dis;
+ $("target").innerHTML=target?`<div class="msg info"><b>Customer:</b> “${target.text}”</div>`:""}
+function renderOrder(){const o=$("order");o.innerHTML=order.length?"":'<p class="muted">No items yet.</p>';
+ order.forEach((it,i)=>{const r=document.createElement("div");r.className="item";
+  const mods=labelLines(it,it.size).filter(([k,v])=>v&&k!=="DRINK").map(([k,v])=>v).join(" · ");
+  r.innerHTML=`<div>${it.size} ${it.d[0]}<br><small>${mods||"standard"}</small></div><b>${money(price(it))}</b>`;r.appendChild(btn("✕",0,()=>{order.splice(i,1);renderAll()}));o.appendChild(r)});
+ const tot=order.reduce((a,it)=>a+price(it),0);$("total").textContent=money(tot);$("mtot").textContent=money(tot)+" · "+order.length+" item"+(order.length===1?"":"s");
+ $("dine").innerHTML="";["Eat in","Take away"].forEach(x=>$("dine").appendChild(btn(x,dine===x,()=>{dine=x;renderAll()})));
+ const c=$("cashBtns");c.innerHTML="";const opts=[...new Set([Math.ceil(tot),5,10,20,50].filter(v=>v>=tot&&tot>0))];
+ opts.forEach(v=>c.appendChild(btn("Cash £"+v,0,()=>pay("cash",v))));
+ $("cardBtn").disabled=$("appBtn").disabled=!order.length;$("voidBtn").disabled=!order.length}
+function renderAll(){renderLeft();renderMods();renderOrder()}
+function addItem(){if(!cur)return;cur.size=size;order.push(cur);cur=null;renderAll();go("leftP")}
+function pay(type,v){const tot=order.reduce((a,it)=>a+price(it),0);const name=$("cname").value;
+ const msg=type==="cash"?`Paid ${money(v)} cash · <b>Change: ${money(v-tot)}</b>`:type==="card"?"Card approved":"Paid with app";
+ $("payMsg").innerHTML=`<div class="msg ok">${msg} · ${dine}</div>`;
+ $("labels").innerHTML=order.map((it,i)=>labelHTML(it,it.size,name,`${i+1}/${order.length}`)).join("")+$("labels").innerHTML;
+ order=[];$("cname").value="";renderAll()}
+// ---- practice mode ----
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+function newTarget(){const d=rnd(D);const sizes=sizesFor(d[3]);const sz=rnd(sizes);size=sz;const t=defaults(d);t.size=sz;const parts=[];
+ if(Math.random()<.2){t.decaf=rnd(["Decaf","Half-caf"]);parts.push(t.decaf.toLowerCase())}
+ if(Math.random()<.35&&t.d[7]!=="None"){t.milk=rnd(["Oat","Almond","Soy","Skimmed","Whole","Coconut"].filter(m=>m!==d[7]));parts.push("with "+t.milk.toLowerCase()+" milk")}
+ if(Math.random()<.3&&S[d[4]][0]!==undefined&&t.shots>0){t.shots++;parts.push("an extra shot")}
+ if(Math.random()<.3){const s=rnd(["Vanilla","Caramel","Hazelnut","SF Vanilla","Cinnamon Dolce"].filter(x=>!(x in t.syr)));t.syr[s]=P[d[3]==="h"?"hot":"iced"][sizes.indexOf(sz)];parts.push(s.toLowerCase()+" syrup")}
+ if(Math.random()<.3){const opts=CUSTOM.filter(x=>d[3]==="h"?["Extra hot","Extra foam","Whip","No whip","Caramel drizzle"].includes(x):["Light ice","Extra ice","Cold foam","Whip","Caramel drizzle"].includes(x)).filter(x=>!t.custom.has(x)&&!(x==="No whip"&&!t.custom.has("Whip")));
+  if(opts.length){const c=rnd(opts);t.custom.add(c);parts.push(c.toLowerCase())}}
+ if(t.custom.has("Whip")&&Math.random()<.15&&d[9].includes("Whip")){t.custom.delete("Whip");parts.push("no whip")}
+ t.text=`Can I get a ${sz} ${d[0]}${parts.length?", "+parts.join(", "):""}, please?`;target=t;cur=null;temp=d[3];cat=d[2];renderAll()}
+function check(){const t=target,c=cur,errs=[];
+ if(c.d!==t.d)errs.push(`Drink should be ${t.d[0]}`);if(size!==t.size)errs.push(`Size should be ${t.size}`);
+ if(c.decaf!==t.decaf)errs.push(`Decaf: ${t.decaf}`);if(c.shots!==t.shots)errs.push(`Shots should be ${t.shots}`);
+ const sj=o=>JSON.stringify(Object.entries(o).sort());if(sj(c.syr)!==sj(t.syr))errs.push(`Syrup should be ${Object.entries(t.syr).map(([k,v])=>v+" "+k).join(", ")||"none"}`);
+ if(c.milk!==t.milk)errs.push(`Milk should be ${t.milk}`);
+ const cs=[...c.custom].sort().join(),ts=[...t.custom].sort().join();if(cs!==ts)errs.push(`Custom should be: ${[...t.custom].join(", ")||"none"}`);
+ score.n++;if(!errs.length)score.ok++;$("score").textContent=`Score ${score.ok}/${score.n}`;
+ $("target").innerHTML=`<div class="msg info"><b>Customer:</b> “${t.text}”</div>`+(errs.length?`<div class="msg bad">✗ ${errs.join("<br>✗ ")}</div>`:`<div class="msg ok">✓ Perfect — ${money(price(Object.assign(c,{size})))}. Next one!</div>`);
+ if(!errs.length){c.size=size;order.push(c);cur=null;target=null;setTimeout(newTarget,1400);renderLeft();renderOrder();$("checkBtn").style.display="none"}}
+$("addBtn").onclick=()=>{if(target)return check();addItem()};$("checkBtn").onclick=check;$("resetBtn").onclick=()=>{if(cur){cur=defaults(cur.d);renderAll()}};
+$("pBtn").onclick=()=>{if(target){target=null;$("pBtn").textContent="🎯 Practice order";renderAll()}else{$("pBtn").textContent="Stop practice";newTarget()}};
+$("cardBtn").onclick=()=>pay("card");$("appBtn").onclick=()=>pay("app");$("voidBtn").onclick=()=>{order=[];$("payMsg").innerHTML="";renderAll()};
+$("mOrder").onclick=()=>go("orderP");$("mDrinks").onclick=()=>go("leftP");
+$("cname").oninput=renderMods;renderAll();
+</script></body></html>
