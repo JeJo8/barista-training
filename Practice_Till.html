@@ -2,233 +2,337 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Practice Till</title>
 <style>
-:root{--bg:#eef0ee;--panel:#fff;--ink:#1c1f1d;--mute:#6a706c;--acc:#1f6f5c;--acc2:#e9f3ef;--line:#dde2de;--warn:#b4442f;--ok:#2d8a4e;--btn:#f3f5f3}
-@media (prefers-color-scheme:dark){:root{--bg:#101211;--panel:#1a1d1b;--ink:#e9ece9;--mute:#9aa29c;--acc:#4cbf9c;--acc2:#1f2b26;--line:#2b302d;--btn:#232825}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.35 -apple-system,Segoe UI,Roboto,sans-serif}
-.top{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
-.top b{color:var(--acc);font-size:17px}.top .sp{flex:1}
-.wrap{display:grid;grid-template-columns:1.25fr 1fr .9fr;gap:10px;padding:10px;height:calc(100vh - 54px)}
-#mbar{display:none}.p{scroll-margin-top:80px}
-@media(max-width:980px){.wrap{grid-template-columns:1fr;height:auto;padding-bottom:80px}.p{overflow:visible}
-#mbar{display:flex;position:fixed;left:0;right:0;bottom:0;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);z-index:5;align-items:center}
-#mbar b{flex:1;font-size:17px}.top{position:sticky;top:0;z-index:4}}
-@media(max-width:480px){.drinks{grid-template-columns:1fr 1fr}button{padding:9px 10px}.step span{min-width:90px}}
-input{font-size:16px}
-.p{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;overflow:auto}
-h4{margin:6px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
-.row{display:flex;flex-wrap:wrap;gap:6px}
-button{font:inherit;border:1px solid var(--line);background:var(--btn);color:var(--ink);border-radius:8px;padding:8px 10px;cursor:pointer}
-button:hover{border-color:var(--acc)}button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
-button.big{padding:12px;font-weight:600}button.pri{background:var(--acc);color:#fff;border-color:var(--acc)}
-button.dang{color:var(--warn)}button:disabled{opacity:.35;cursor:not-allowed}
-.drinks{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px}
-.drinks button{min-height:52px;text-align:left;font-size:13px}.drinks small{display:block;color:var(--mute);font-size:11px}
-.drinks button.on small{color:#e6f5ef}
-.step{display:flex;align-items:center;gap:6px;margin:4px 0}.step span{min-width:110px}.step .n{min-width:26px;text-align:center;font-weight:700}
-.label{font-family:ui-monospace,Menlo,Consolas,monospace;background:#fffef6;color:#111;border:1px dashed #999;border-radius:6px;padding:10px 12px;margin:6px 0;font-size:13px;line-height:1.5}
-.label .h{display:flex;justify-content:space-between;font-weight:700;border-bottom:1px solid #ccc;margin-bottom:4px}
-.label .l{display:grid;grid-template-columns:62px 1fr}.label .l i{font-style:normal;color:#777}
-.item{border-bottom:1px solid var(--line);padding:6px 0;display:flex;gap:8px}.item div{flex:1}.item small{color:var(--mute)}
-.tot{display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin:8px 0}
-.msg{padding:8px 10px;border-radius:8px;margin:6px 0;font-size:13px}.msg.ok{background:#dff3e5;color:#1d5a33}.msg.bad{background:#f8e1dc;color:#7a2a1b}.msg.info{background:var(--acc2)}
-input{font:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--btn);color:var(--ink);width:100%}
-.muted{color:var(--mute);font-size:12px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#0e0e0f;overflow:hidden;font-family:"Segoe UI",-apple-system,Roboto,Arial,sans-serif;user-select:none}
+#stage{position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;background:#151516;color:#eee}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+/* LEFT: order */
+#left{position:absolute;left:0;top:0;width:290px;height:800px;background:#1b1b1d;display:flex;flex-direction:column}
+#status{font-size:9px;color:#bbb;padding:4px 8px 0;height:16px}
+#scan{height:70px;background:#55555a;display:flex;align-items:center;gap:10px;padding:0 10px}
+#scan .ic{width:42px;height:42px;border-radius:50%;border:3px solid #ccc;display:grid;place-items:center;font-size:22px;color:#ddd}
+#scan b{font-size:22px;color:#f3f3f3;display:block;line-height:1}#scan small{color:#ddd;font-size:12px}
+#lines{flex:1;background:linear-gradient(#dfe7ee,#cfd9e2);color:#222;overflow:auto;font-size:15px}
+.ln{padding:2px 8px;display:flex;border-bottom:1px solid rgba(0,0,0,.06)}.ln.sel{background:#9ea8b4}
+.ln span:first-child{flex:1}.ln.sub{padding-left:34px}.ln .q{width:22px;display:inline-block}
+#target{background:#fff5c9;color:#3b2d00;font-size:14px;padding:8px 10px;border-bottom:2px solid #e2c34a;display:none}
+#target .r{margin-top:4px;font-size:13px}#target .bad{color:#9b2412}#target .ok{color:#1d6b35;font-weight:700}
+#del{height:52px;background:linear-gradient(#c8212f,#99141f);font-size:17px;margin:4px 0}
+#bot{height:86px;display:flex;gap:4px}
+#fn{flex:1.2;background:#3d3d41;font-size:17px}#pay{flex:1;background:linear-gradient(#2fc394,#1f9c74);font-size:17px}
+#pay .t{display:block;font-size:22px;color:#0b3d2d}
+#stamp{font-size:9px;color:#aaa;text-align:center;height:16px;padding-top:3px}
+/* STRIP */
+#strip{position:absolute;left:290px;top:0;width:115px;height:800px;background:linear-gradient(90deg,#c6c6cc,#d8d8de);color:#333;display:none;padding:22px 10px 0;z-index:3}
+#strip label{display:block;text-align:center;font-size:12px;margin:12px 0 3px;color:#444}
+.pill{width:100%;height:38px;border-radius:20px;background:#eceef2;border:1px solid #b9bcc4;display:flex;align-items:center;padding:0 10px;font-size:13px;color:#333}
+.pill .dot{width:22px;height:22px;border-radius:50%;border:2px solid #444;margin-right:8px;background:#fff}.pill.on .dot{background:#1f9c74;border-color:#1f9c74}
+select.pill{appearance:none;-webkit-appearance:none;background:#eceef2 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235577cc'/%3E%3C/svg%3E") no-repeat right 12px center}
+.box{width:100%;height:38px;background:#fafafa;border:2px solid #444;border-radius:3px;display:grid;place-items:center;font-size:14px;color:#333;font-family:"Segoe Print","Comic Sans MS",cursive}
+.pm{display:flex;align-items:center;height:38px;border:2px solid #444;border-radius:20px;background:#fafafa;overflow:hidden}
+.pm button{width:34px;height:34px;border-radius:50%;border:2px solid #333;background:#fff;font-size:22px;line-height:1;color:#222;flex:none}
+.pm span{flex:1;text-align:center;font-size:13px;color:#555;font-family:"Segoe Print","Comic Sans MS",cursive}
+.tree{margin:2px 0 0 12px;border-left:1.5px solid #555;font-size:11px}
+.tree button{display:block;background:none;color:#333;padding:10px 0 10px 12px;position:relative;font-size:11px}
+.tree button:before{content:"";position:absolute;left:0;top:50%;width:9px;border-top:1.5px solid #555}
+.tree button:hover{color:#1f6f5c;font-weight:700}
+/* WINGS */
+.wing{position:absolute;top:258px;width:52px;height:350px;background:rgba(170,170,176,.85);display:none;flex-direction:column;justify-content:space-around;align-items:center;z-index:2;border-radius:4px}
+#wingL{left:240px}#wingR{left:403px}
+.wing button{width:38px;height:38px;border-radius:3px;font-weight:700;font-size:15px;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.wing button.on{outline:3px solid #fff}
+/* MAIN */
+#main{position:absolute;left:290px;top:0;right:0;height:800px}
+#tabs{height:96px;display:flex;align-items:flex-end;padding:22px 0 0 0}
+#tabs button{flex:1;height:74px;background:linear-gradient(#2f7a55,#245e45);font-size:15px;color:#eee}
+#tabs button.on{background:none;color:#ddd}#tabs button.srch{flex:.9;background:#2f8a62;font-size:20px}
+#tabs .gap{flex:.95}
+#area{position:absolute;top:96px;left:0;right:0;bottom:0}
+body.strip #area{left:168px}body.strip #tabsWrap{left:115px}
+#tabsWrap{position:absolute;left:0;right:0;top:0}
+/* drinks */
+#pre{display:flex;gap:6px;align-items:center;padding:10px 12px 2px 26px;font-size:14px}
+.seg{display:flex;background:#3a3a3e;border-radius:20px;overflow:hidden}
+.seg button{padding:8px 0;width:84px;background:transparent;color:#bbb;border-right:1px solid #222}.seg button.on{background:#7b7b85;color:#eee}
+.tg{padding:8px 0;width:100px;border-radius:20px;background:#3a3a3e;color:#bbb;display:flex;align-items:center;justify-content:center;gap:8px}
+.tg.on{background:#7b7b85;color:#fff}.tg .dot{width:22px;height:22px;border-radius:50%;background:#222;border:2px solid #555}.tg.on .dot{background:#2fc394}
+#grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px 6px;padding:6px 14px 0 26px}
+.ch{text-align:center;font-size:15px;color:#e8e8e8;padding:8px 0 6px;border-left:1px solid #2a2a2a}
+.tile{height:86px;border-radius:4px;font-size:16px;line-height:1.15;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);padding:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 2px 3px rgba(0,0,0,.5)}
+.tile:active{filter:brightness(1.25)}.tile.blank{background:none;box-shadow:none;pointer-events:none}
+.seas{grid-column:1/-1;font-size:13px;font-style:italic;color:#ddd;border-bottom:1px solid #aaa;padding:8px 0 0;margin-bottom:2px}
+/* panels */
+.panel{position:absolute;inset:8px 0 6px 8px;padding:12px 10px!important;background:linear-gradient(#e6e6ee,#d7d8e2);border-radius:6px;color:#222;padding:14px 16px;overflow:auto}
+.panel .wm{position:absolute;left:14px;top:6px;font-size:20px;color:#fff;opacity:.85}
+.cols{display:flex;gap:6px;margin-top:18px;align-items:flex-start}
+.col h5{margin:0 0 8px;text-align:center;font-size:17px;font-weight:400;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.col .g{display:grid;gap:6px}
+.mt{width:122px;height:70px;border-radius:4px;display:flex;align-items:center;justify-content:space-between;padding:0 2px;color:#fff;font-size:11.5px;text-align:center;box-shadow:0 2px 3px rgba(0,0,0,.25);position:relative}
+.mt b{font-size:24px;width:22px;font-weight:400;cursor:pointer}.mt span{flex:1}
+.mt .n{position:absolute;top:3px;right:6px;background:#fff;color:#222;border-radius:10px;font-size:11px;padding:0 6px;font-weight:700}
+.mt.x:after{content:"";position:absolute;inset:0;background:linear-gradient(45deg,transparent 46%,#e02020 46%,#e02020 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,#e02020 46%,#e02020 54%,transparent 54%);opacity:.8;pointer-events:none}
+.pt{width:104px;height:78px;border-radius:4px;color:#fff;font-size:13.5px;box-shadow:0 2px 3px rgba(0,0,0,.25)}
+.pt.on{background:#f7f7f7!important;color:#333;border:2px solid #555}
+#allergy{position:absolute;right:12px;bottom:12px;width:120px;height:70px;background:#6d3ee0;color:#fff;border-radius:4px;font-size:16px}
+/* modal */
+#modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:20}
+.mbox{background:#f2f2f5;color:#222;border-radius:10px;padding:20px 22px;width:560px;max-height:740px;overflow:auto}
+.mbox h3{margin:0 0 10px}.mbox .row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.mbox button{padding:14px 16px;border-radius:6px;background:#dcdce4;font-size:16px}.mbox button.pri{background:#1f9c74;color:#fff}
+.lbl{font-family:ui-monospace,Menlo,Consolas,monospace;background:#fffef4;border:1px dashed #888;border-radius:4px;padding:8px 10px;margin:8px 0;font-size:13px;width:240px;display:inline-block;vertical-align:top;margin-right:8px}
+.lbl .l{display:grid;grid-template-columns:60px 1fr}.lbl i{font-style:normal;color:#888}
+#rot{position:fixed;inset:auto 10px 10px 10px;background:#1f9c74;color:#fff;padding:10px 14px;border-radius:10px;font:14px -apple-system,sans-serif;display:none;z-index:50}
 </style></head><body>
-<div class="top"><b>Practice Till</b><span class="muted">Training only · practice prices</span><span class="sp"></span>
-<button id="pBtn" class="pri">🎯 Practice order</button><span id="score" class="muted"></span></div>
-<div id="mbar"><b id="mtot">£0.00 · 0 items</b><button id="mDrinks">Drinks</button><button class="pri" id="mOrder">Order / Pay</button></div>
-<div class="wrap">
-<!-- LEFT: size + drinks -->
-<div class="p" id="leftP">
- <h4>1 · Size</h4><div class="row" id="sizes"></div>
- <h4>Hot / Iced</h4><div class="row" id="temps"></div>
- <h4>2 · Drink</h4><div class="row" id="cats" style="margin-bottom:6px"></div>
- <div class="drinks" id="drinks"></div>
+<div id="stage">
+ <div id="left">
+  <div id="status">Trainee | <span id="clock"></span> | Practice Store</div>
+  <div id="scan"><div class="ic">👤</div><div><b>Scan Member ID</b><small>Ready</small></div></div>
+  <div id="target"></div>
+  <div id="lines"></div>
+  <button id="del" data-a="del">Delete Item</button>
+  <div id="bot"><button id="fn" data-a="fn">Functions</button><button id="pay" data-a="pay">Pay<span class="t" id="tot">0.00</span></button></div>
+  <div id="stamp">Practice till · not a real POS</div>
+ </div>
+ <div id="strip"></div>
+ <div class="wing" id="wingL"></div><div class="wing" id="wingR"></div>
+ <div id="main"><div id="tabsWrap"><div id="tabs"></div></div><div id="area"></div></div>
+ <div id="modal"></div>
 </div>
-<!-- MIDDLE: modifiers in label order -->
-<div class="p" id="mods">
- <div id="target"></div>
- <h4>Decaf</h4><div class="row" id="decaf"></div>
- <h4>Shots</h4><div id="shots"></div>
- <h4>Syrup / Sauce</h4><div id="syrups"></div>
- <h4>Milk</h4><div class="row" id="milks"></div>
- <h4>Custom</h4><div class="row" id="custom"></div>
- <h4>Cup label preview</h4><div id="preview"></div>
- <div class="row" style="margin-top:6px"><button class="big pri" id="addBtn" style="flex:1">Add to order</button><button class="big" id="checkBtn" style="display:none">Check</button><button id="resetBtn">Reset drink</button></div>
-</div>
-<!-- RIGHT: order + pay -->
-<div class="p" id="orderP">
- <h4>Order</h4>
- <input id="cname" placeholder="Customer name (prints on label)">
- <div class="row" style="margin:6px 0" id="dine"></div>
- <div id="order"></div>
- <div class="tot"><span>Total</span><span id="total">£0.00</span></div>
- <h4>Payment</h4>
- <div class="row" id="cashBtns"></div>
- <div class="row" style="margin-top:6px"><button class="big" id="cardBtn" style="flex:1">💳 Card / Contactless</button><button class="big" id="appBtn" style="flex:1">📱 App</button></div>
- <div id="payMsg"></div>
- <div class="row" style="margin-top:6px"><button class="dang" id="voidBtn">Void order</button></div>
- <h4>Printed labels</h4><div id="labels"></div>
-</div>
-</div>
+<div id="rot">↻ Turn your phone sideways for the full till. <u data-a="rotx">OK</u></div>
 <script>
-const HOT=["Short","Tall","Grande","Venti"], ICE=["Tall","Grande","Venti"];
-const SZ={Short:"S",Tall:"T",Grande:"G",Venti:"V"};
-// shots by [Short,Tall,Grande,Venti] (hot) or [Tall,Grande,Venti] (iced)
-const S={latte:[1,2,2,3],am:[1,2,3,4],rist:[2,2,3,3],dop:[1,2,2,2],none:[0,0,0,0],iLatte:[2,2,3],iAm:[2,3,4],shaken:[2,3,4],iRist:[2,3,3],zero:[0,0,0],frapE:[1,2,3]};
-const P={hot:[2,3,4,5],mac:[1,2,3,4],iced:[3,4,6],iMac:[2,3,4],cb:[1,2,3],frap:[2,3,4],none:[0,0,0,0],noneI:[0,0,0]};
-const PRICE={am:[2.55,2.90,3.25,3.55],basic:[2.95,3.30,3.70,4.00],flav:[3.35,3.70,4.10,4.40],esp:[2.10,2.40,2.40,2.40],tea:[2.60,2.95,3.35,3.65],cb:[3.20,3.55,3.90],frap:[3.95,4.35,4.75],ref:[3.30,3.65,4.00],choc:[2.80,3.15,3.55,3.85]};
-// name, short code, cat, temp, shotsKey, syrup, pumpsKey, default milk, price, default customs
-const D=[
-["Caffè Latte","LTE","Espresso","h","latte","","none","2%","basic",[]],
-["Cappuccino","CAP","Espresso","h","latte","","none","2%","basic",["Extra foam"]],
-["Flat White","FW","Espresso","h","rist","","none","Whole","basic",[]],
-["Americano","AM","Espresso","h","am","","none","None","am",[]],
-["Espresso","ESP","Espresso","h","dop","","none","None","esp",[]],
-["Espresso Macchiato","EM","Espresso","h","dop","","none","None","esp",[]],
-["Caramel Macchiato","CM","Espresso","h","latte","Vanilla","mac","2%","flav",["Caramel drizzle"]],
-["Vanilla Latte","VL","Espresso","h","latte","Vanilla","hot","2%","flav",[]],
-["Caramel Latte","CL","Espresso","h","latte","Caramel","hot","2%","flav",[]],
-["Hazelnut Latte","HL","Espresso","h","latte","Hazelnut","hot","2%","flav",[]],
-["Caffè Mocha","M","Espresso","h","latte","Mocha","hot","2%","flav",["Whip"]],
-["White Choc Mocha","WM","Espresso","h","latte","White Mocha","hot","2%","flav",["Whip"]],
-["Cinnamon Dolce Latte","CDL","Espresso","h","latte","Cinnamon Dolce","hot","2%","flav",["Whip"]],
-["Pumpkin Spice Latte","PSL","Seasonal","h","latte","Pumpkin","hot","2%","flav",["Whip"]],
-["Peppermint Mocha","PM","Seasonal","h","latte","Mocha","hot","2%","flav",["Whip"]],
-["Toffee Nut Latte","TNL","Seasonal","h","latte","Toffee Nut","hot","2%","flav",["Whip"]],
-["Iced Latte","LTE","Iced","i","iLatte","","noneI","2%","basic",[]],
-["Iced Americano","AM","Iced","i","iAm","","noneI","None","am",[]],
-["Iced Caramel Macchiato","CM","Iced","i","iLatte","Vanilla","iMac","2%","flav",["Caramel drizzle"]],
-["Iced Vanilla Latte","VL","Iced","i","iLatte","Vanilla","iced","2%","flav",[]],
-["Iced Mocha","M","Iced","i","iLatte","Mocha","iced","2%","flav",["Whip"]],
-["Iced White Mocha","WM","Iced","i","iLatte","White Mocha","iced","2%","flav",["Whip"]],
-["Iced Shaken Espresso","ISE","Iced","i","shaken","Classic","iced","2%","flav",[]],
-["Brown Sugar Oat Shaken","BSOSE","Iced","i","shaken","Brown Sugar","iced","Oat","flav",[]],
-["Iced Flat White","FW","Iced","i","iRist","","noneI","Whole","basic",[]],
-["Cold Brew","CB","Cold Brew","i","zero","","noneI","None","cb",[]],
-["Vanilla Sweet Cream CB","VSCCB","Cold Brew","i","zero","Vanilla","cb","None","cb",["Sweet cream"]],
-["Salted Caramel Cream CB","SCCB","Cold Brew","i","zero","Caramel","cb","None","cb",["Cold foam"]],
-["Pumpkin Cream CB","PCCB","Seasonal","i","zero","Vanilla","cb","None","cb",["Cold foam"]],
-["Coffee Frappuccino","CF","Frapp Coffee","i","zero","Frapp base","frap","Whole","frap",[]],
-["Caramel Frappuccino","CRF","Frapp Coffee","i","zero","Caramel","frap","Whole","frap",["Whip","Caramel drizzle"]],
-["Mocha Frappuccino","MF","Frapp Coffee","i","zero","Mocha","frap","Whole","frap",["Whip"]],
-["Java Chip Frappuccino","JCF","Frapp Coffee","i","zero","Mocha","frap","Whole","frap",["Whip","Choc chips"]],
-["Strawberry Crème Frapp","SCF","Frapp Crème","i","zero","Strawberry","frap","Whole","frap",["Whip"]],
-["Vanilla Bean Crème Frapp","VBCF","Frapp Crème","i","zero","Vanilla Bean","frap","Whole","frap",["Whip"]],
-["Double Choc Chip Crème","DCC","Frapp Crème","i","zero","Mocha","frap","Whole","frap",["Whip","Choc chips"]],
-["Matcha Crème Frapp","MCF","Frapp Crème","i","zero","Matcha","frap","Whole","frap",["Whip"]],
-["Chai Crème Frapp","CCF","Frapp Crème","i","zero","Chai","frap","Whole","frap",["Whip"]],
-["Espresso Frappuccino","EF","Frapp Coffee","i","frapE","Frapp base","frap","Whole","frap",[]],
-["Chai Latte","CT","Tea","h","none","Chai","hot","2%","tea",[]],
-["Iced Chai Latte","CT","Tea","i","zero","Chai","iced","2%","tea",[]],
-["Matcha Latte","MT","Tea","h","none","Classic","hot","2%","tea",[]],
-["Iced Matcha Latte","MT","Tea","i","zero","Classic","iced","2%","tea",[]],
-["London Fog","LF","Tea","h","none","Vanilla","hot","2%","tea",[]],
-["Brewed Tea","TEA","Tea","h","none","","none","None","tea",[]],
-["Iced Tea Lemonade","ITL","Tea","i","zero","","noneI","None","ref",[]],
-["Strawberry Açaí","SA","Refreshers","i","zero","","noneI","None","ref",[]],
-["Pink Drink","PD","Refreshers","i","zero","","noneI","Coconut","ref",[]],
-["Mango Dragonfruit","MD","Refreshers","i","zero","","noneI","None","ref",[]],
-["Hot Chocolate","HC","Other","h","none","Mocha","hot","2%","choc",["Whip"]],
-["Steamer","STM","Other","h","none","Vanilla","hot","2%","choc",[]],
+/* ---------- DATA ---------- */
+const SIZES=["Short","Tall","Grande","Venti"],SAB={Short:"SH",Tall:"TL",Grande:"GR",Venti:"VT"};
+const SH={latte:{h:[1,2,2,3],i:[0,2,2,3]},am:{h:[1,2,3,4],i:[0,2,3,4]},rist:{h:[2,2,3,3],i:[0,2,3,3]},dop:{h:[1,2,2,2],i:[0,2,2,2]},shaken:{h:[0,2,3,4],i:[0,2,3,4]},none:{h:[0,0,0,0],i:[0,0,0,0]},frapE:{h:[0,1,2,3],i:[0,1,2,3]}};
+const PU={hot:{h:[2,3,4,5],i:[0,3,4,6]},mac:{h:[1,2,3,4],i:[0,2,3,4]},cb:{h:[0,1,2,3],i:[0,1,2,3]},frap:{h:[0,2,3,4],i:[0,2,3,4]},one:{h:[1,1,2,2],i:[0,1,2,2]}};
+// [name, code, column, temp(h/i/b), shots, syrup, pumps, milk, grandePrice, toppings{}, prep[]]
+const DR=[
+["Latte","L","Espresso","b","latte","","hot","Semi Skimmed",4.50,{},["Foam"]],
+["Cappuccino","C","Espresso","b","latte","","hot","Semi Skimmed",4.50,{},["Dry"]],
+["Flat White","FW","Espresso","b","rist","","hot","Whole",4.45,{},["Wet"]],
+["Americano","A","Espresso","b","am","","hot","None",3.95,{},["Water"]],
+["Caramel Macchiato","CM","Espresso","b","latte","Vanilla","mac","Semi Skimmed",4.95,{"Caramel Drizzle":1},["Foam"]],
+["Mocha","M","Espresso","b","latte","Mocha","hot","Semi Skimmed",4.95,{"Whipped Cream":1},[]],
+["Espresso","E","Espresso","h","dop","","hot","None",2.65,{},[]],
+["White Choc Mocha","WM","Espresso","b","latte","White Mocha","hot","Semi Skimmed",5.05,{"Whipped Cream":1},[]],
+["Espresso Macchiato","EM","Espresso","h","dop","","hot","Semi Skimmed",2.85,{},["Foam"]],
+["Iced Brown Sugar Oat Shaken Espresso","BSOSE","Espresso","i","shaken","Brown Sugar","hot","Oat",5.15,{},["Shaken","Ice"]],
+["Caramel Coffee Frappuccino","CRF","Frappuccino","i","none","Caramel","frap","Whole",5.25,{"Whipped Cream":1,"Caramel Drizzle":1},["Blended"]],
+["Coffee Frappuccino","CF","Frappuccino","i","none","","frap","Whole",4.95,{},["Blended"]],
+["Strawberry Cream Frappuccino","SCF","Frappuccino","i","none","","frap","Whole",5.25,{"Whipped Cream":1},["Blended"]],
+["Cookies & Cream Frappuccino","CCF","Frappuccino","i","none","","frap","Whole",5.35,{"Whipped Cream":1},["Blended"]],
+["Chocolate Cream Frappuccino","CHF","Frappuccino","i","none","Mocha","frap","Whole",5.25,{"Whipped Cream":1},["Blended"]],
+["Pike Place Roast","PPR","Brewed","h","none","","hot","None",3.25,{},["Room"]],
+["Coffee of the Week","COW","Brewed","h","none","","hot","None",3.25,{},["Room"]],
+["Cold Brew","CB","Brewed","i","none","","cb","None",4.05,{},["Ice"]],
+["Cold Brew Latte","CBL","Brewed","i","none","","cb","Semi Skimmed",4.45,{},["Ice"]],
+["French Press","FP","Brewed","h","none","","hot","None",3.75,{},[]],
+["English Breakfast Tea","EB","Tea","h","none","","hot","None",2.95,{},[]],
+["Emperors Cloud & Mist","ECM","Tea","h","none","","hot","None",2.95,{},[]],
+["Chai Latte","CH","Tea","b","none","Chai","hot","Semi Skimmed",4.45,{},["Foam"]],
+["Matcha Latte","MT","Tea","b","none","","hot","Semi Skimmed",4.75,{},["Foam"]],
+["Peach Iced Tea","PIT","Tea","i","none","","hot","None",3.95,{},["Shaken","Ice"]],
+["Classic Hot Chocolate","HC","Other","h","none","Mocha","hot","Semi Skimmed",4.25,{"Whipped Cream":1},[]],
+["Strawberry Acai Refresha","SAR","Other","i","none","","hot","None",4.25,{"Strawberry Inclusion":1},["Shaken","Ice"]],
+["Very Berry Refresha","VBR","Other","i","none","","hot","None",4.25,{"Blackberry Inclusion":1},["Shaken","Ice"]],
+["Cool Lime Refresha","CLR","Other","i","none","","hot","None",4.25,{"Cool Lime Inclusion":1},["Shaken","Ice"]],
+["Milk","MLK","Other","h","none","","hot","Semi Skimmed",2.50,{},[]],
+// seasonal
+["Aerocano","AER","S","i","am","","hot","None",4.15,{},["Ice"]],
+["Caramel Aerocano","CAER","S","i","am","Caramel","hot","None",4.55,{},["Ice"]],
+["Mummy Frappuccino","MF","S","i","none","White Mocha","frap","Whole",5.45,{"Whipped Cream":1,"Chocolate Button Eyes":1},["Blended"]],
+[null],
+["Iced Apple Crumble Matcha Latte","IACM","S","i","none","","hot","Oat",5.25,{"Apple Cream Cold Foam":1,"Biscuit Crumble Topping":1},["Ice"]],
+["Cherry Pomegranate Refresha","CPR","S","i","none","","hot","None",4.45,{"Cherry Slices":1},["Shaken","Ice"]],
 ];
-const SYRUPS=["Vanilla","Caramel","Hazelnut","Classic","Brown Sugar","Cinnamon Dolce","Toffee Nut","Peppermint","Mocha","White Mocha","Pumpkin","SF Vanilla"];
-const SYR_CODE={Vanilla:"V","SF Vanilla":"SFV",Caramel:"C",Hazelnut:"H",Classic:"CL","Brown Sugar":"BS","Cinnamon Dolce":"CD","Toffee Nut":"TN",Peppermint:"P",Mocha:"M","White Mocha":"WM",Pumpkin:"PS",Chai:"CH","Frapp base":"BASE",Strawberry:"STR"};
-const MILKS=["2%","Whole","Skimmed","Breve","Oat","Almond","Soy","Coconut","None"];
-const MILK_CODE={"2%":"","Whole":"W","Skimmed":"N","Breve":"B","Oat":"O","Almond":"A","Soy":"S","Coconut":"CO","None":""};
-const PLANT=["Oat","Almond","Soy","Coconut"];
-const CUSTOM=["Extra hot","Warm","Extra foam","No foam","Light foam","Whip","No whip","Caramel drizzle","Mocha drizzle","Cold foam","Sweet cream","Choc chips","Light ice","Extra ice","No ice","Upside down","Kids temp"];
-const CUS_CODE={"Extra hot":"XHOT","Warm":"WARM","Extra foam":"XFOAM","No foam":"NOFOAM","Light foam":"LTFOAM","Whip":"WHIP","No whip":"NOWHIP","Caramel drizzle":"CRML","Mocha drizzle":"MDRZ","Cold foam":"CFOAM","Sweet cream":"SCRM","Choc chips":"CHIP","Light ice":"LTICE","Extra ice":"XICE","No ice":"NOICE","Upside down":"UPSD","Kids temp":"KIDS"};
-const COST={shot:0.70,syrup:0.50,plant:0.40,"Cold foam":1.00,"Sweet cream":0.60,"Choc chips":0.40,"Caramel drizzle":0.30,"Mocha drizzle":0.30,Whip:0.30};
+const D=DR.filter(d=>d[0]).map(d=>({n:d[0],code:d[1],col:d[2],t:d[3],sh:d[4],syr:d[5],pu:d[6],milk:d[7],pg:d[8],top:d[9],prep:d[10]}));
+const COLS=[["Espresso",2,["#e7a372","#5a4538"]],["Frappuccino",1,["#d8582c","#8f2c20"]],["Brewed",1,["#ef8b39","#6b3322"]],["Tea",1,["#e7b56c","#4d3e2c"]],["Other",1,["#d9d27a","#393a2f"]]];
+const SEAS_C=["#4e3c31","#5a4334","#9a4a22",null,"#6a4a33","#3f3a30"];
+const MILKS=[["Semi Skimmed","%"],["Whole","W"],["Skimmed","N"],["Oat","O"],["Almond","A"],["Soy","S"],["Coconut","CO"],["Breve","BR"],["None","—"]];
+const SYRUPS=[["Vanilla","V"],["Caramel","C"],["Hazelnut","H"],["Classic","CL"],["Brown Sugar","BS"],["SF Vanilla","SFV"],["Toffee Nut","TN"],["Cinnamon Dolce","CD"],["Mocha","M"],["White Mocha","WM"],["Pumpkin Spice","PS"],["Chai","CH"],["Honey","HY"]];
+const TOP=[
+ ["Cold Foam","#7f9f63",["Cream Cold Foam","Strawberry Cream Cold Foam","Cookies and Cream Cold Foam","Matcha Cream Cold Foam","Apple Cream Cold Foam","Pumpkin Cream Cold Foam","BrownSugar Cream Cold Foam","Caramel Cream Cold Foam"]],
+ ["Whip","#8aa86a",["Whipped Cream","Espresso Whipped Cream","Vegan Whip",null,null,"Caramelised Banana Milk Foam","Vanilla Protein Cold Foam","SF Vanilla Protein Cold Foam"]],
+ ["Drizzle","#6e9a8a",["Mocha Drizzle","Caramel Drizzle","Maple Pecan Drizzle",null,null,null,"Caramel Protein Cold Foam","SF Caramel Protein Cold Foam"]],
+ ["Toppings","#94ad6d",["Cookie Crumble Topping","Choc Chip Cookie Topping","Cool Lime Inclusion","Dragonfruit Pieces","Pumpkin Spice Topping",null,"Hazelnut Protein Cold Foam","SF Hazelnut Protein Cold Foam"]],
+ ["","#94ad6d",["Frappuccino Chips","Strawberry Inclusion","Blackberry Inclusion","Biscuit Crumble Topping","Chocolate Button Eyes","Cherry Slices","Simple Syrup Protein Cold Foam","Brown Sugar Protein Cold Foam"]],
+ ["Powder","#8aa86a",["Nutmeg Powder","Chocolate Powder","Vanilla Powder","Cinnamon Powder","Cookie Powder","Mocha Powder"]],
+];
+const UNAVAIL=new Set(["Cinnamon Powder"]);
+const PREP=[
+ ["Condiments",[["White Sugar","#8295a6"],["Brown Sugar","#8295a6"],["Sweetener","#8295a6"]]],
+ ["Temp",[["Extra Hot","#8c4f73"],["Warm","#8c4f73"],["Temperature (...)","#6a4256"],["Ask Me","#5c3d4d"]]],
+ ["Customisations",[["Blended","#8a9db0"],["Double Blended","#8a9db0"],["Unblended","#8a9db0"],["Shaken","#8a9db0"],["Stirred","#8fa8c4"],["Water","#6e5578"],["Room","#6e5578"]]],
+ ["",[["Wet","#6a5d9a"],["Foam","#6a5d9a"],["Dry","#6a5d9a"],["Extra Dry","#6a5d9a"],["Ice","#6a4a5d"],["Light Ice","#6a4a5d"],["Extra Ice","#6a4a5d"]]],
+ ["Cup/Lid",[["Own Cup","#d0685e"],["For Here Cup","#d0685e"]]],
+ ["",[["Flat Lid","#c95b55"],["Dome Lid","#c95b55"]]],
+ ["Larger Cup",[["Venti Cup","#cd8a6c"],["Grande Cup","#cd8a6c"],["Tall Cup","#cd8a6c"],["Short Cup","#cd8a6c"],[" ",null],["Extra Room","#2f5130"]]],
+];
+const EXCL=[["Extra Hot","Warm","Temperature (...)","Ask Me"],["Blended","Double Blended","Unblended"],["Wet","Foam","Dry","Extra Dry"],["Ice","Light Ice","Extra Ice"],["Own Cup","For Here Cup"],["Flat Lid","Dome Lid"],["Venti Cup","Grande Cup","Tall Cup","Short Cup"]];
+const CODE={"Foam":"F","Wet":"W","Dry":"D","Extra Dry":"XD","Extra Hot":"XH","Warm":"WRM","Ask Me":"ASK","Temperature (...)":"TMP","Blended":"BL","Double Blended":"DBL","Unblended":"UBL","Shaken":"SHK","Stirred":"STR","Water":"WTR","Room":"RM","Ice":"","Light Ice":"LI","Extra Ice":"XI","Extra Room":"XR","Own Cup":"OWN","For Here Cup":"FH","Whipped Cream":"WC","Caramel Drizzle":"CR","Mocha Drizzle":"MD","White Sugar":"WS","Brown Sugar":"BS","Sweetener":"SW"};
+const PRICE={shot:0.70,syrup:0.55,coldfoam:1.00,top:0.50,plant:0};
+const ab=s=>CODE[s]!==undefined?CODE[s]:s.split(/[\s&]+/).filter(Boolean).map(w=>w[0]).join("").toUpperCase();
 
-let temp="h",size="Grande",cat="Espresso",cur=null,order=[],dine="Eat in",target=null,score={ok:0,n:0};
-const $=id=>document.getElementById(id);
-const sizesFor=t=>t==="h"?HOT:ICE;const si=()=>sizesFor(cur?cur.d[3]:temp).indexOf(size);
-const money=n=>"£"+n.toFixed(2);
-function defaults(d){const i=sizesFor(d[3]).indexOf(size);const syr={};if(d[5])syr[d[5]]=P[d[6]][i]||1;
- return{d,decaf:"Regular",shots:S[d[4]][i],syr,milk:d[7],custom:new Set(d[9])}}
-const mob=()=>window.innerWidth<=980;const go=id=>{if(mob())document.getElementById(id).scrollIntoView({behavior:"smooth"})};
-function pick(d){if(d[3]==="i"&&size==="Short")size="Tall";temp=d[3];cur=defaults(d);renderAll();go("mods")}
-function setSize(s){size=s;if(cur){const keep=cur;cur=defaults(cur.d);cur.decaf=keep.decaf;cur.milk=keep.milk;cur.custom=keep.custom;
- // keep extra shots / syrup deltas
- const base=defaults(keep.d);}renderAll()}
-function price(it){const d=it.d,i=sizesFor(d[3]).indexOf(it.size||size);let p=PRICE[d[8]][d[3]==="i"&&PRICE[d[8]].length===4?i+1:i];
- if(d[3]==="i"&&PRICE[d[8]].length===4)p+=0.20;
- const base=defaults(d),extra=Math.max(0,it.shots-base.shots);p+=extra*COST.shot;
- for(const k in it.syr)if(!(k in base.syr))p+=COST.syrup;
- if(PLANT.includes(it.milk)&&!PLANT.includes(d[7]))p+=COST.plant;
- it.custom.forEach(c=>{if(!base.custom.has(c)&&COST[c])p+=COST[c]});return p}
-function labelLines(it,sz){const d=it.d,base=defaults(d),L=[];
- L.push(["DECAF",it.decaf==="Decaf"?"DECAF":it.decaf==="Half-caf"?"1/2 DECAF":""]);
- L.push(["SHOTS",it.shots!==base.shots?it.shots+" SHOT":""]);
- const sy=Object.entries(it.syr).filter(([k,v])=>base.syr[k]!==v).map(([k,v])=>v+" "+(SYR_CODE[k]||k.toUpperCase()));
- const removed=Object.keys(base.syr).filter(k=>!(k in it.syr)).map(k=>"NO "+(SYR_CODE[k]||k));
- L.push(["SYRUP",[...sy,...removed].join(" ")]);
- L.push(["MILK",it.milk!==d[7]?(it.milk==="None"?"NO MILK":(MILK_CODE[it.milk]||it.milk.toUpperCase())):""]);
- const cu=[...it.custom].filter(c=>!base.custom.has(c)).map(c=>CUS_CODE[c]);const rm=[...base.custom].filter(c=>!it.custom.has(c)).map(c=>"NO "+CUS_CODE[c]);
- L.push(["CUSTOM",[...cu,...rm].join(" ")]);
- L.push(["DRINK",SZ[sz]+" "+(d[3]==="i"&&!/^I|Frapp|Cold|Pink|Mango|Straw/.test(d[0])?"I":"")+d[1]]);return L}
-function labelHTML(it,sz,name,n){return `<div class="label"><div class="h"><span>${(name||"—").toUpperCase()}</span><span>${n||""}</span></div>${labelLines(it,sz).map(([k,v])=>`<div class="l"><i>${k}</i><span>${v||""}</span></div>`).join("")}<div class="muted" style="color:#666;margin-top:4px">${it.d[0]} · ${sz}${it.decaf!=="Regular"?" · "+it.decaf:""}</div></div>`}
-function btn(t,on,fn,dis){const b=document.createElement("button");b.textContent=t;if(on)b.classList.add("on");if(dis)b.disabled=true;b.onclick=fn;return b}
-function renderLeft(){const s=$("sizes");s.innerHTML="";HOT.forEach(z=>s.appendChild(btn(z,z===size,()=>setSize(z),(cur?cur.d[3]:temp)==="i"&&z==="Short")));
- const t=$("temps");t.innerHTML="";[["h","Hot"],["i","Iced"]].forEach(([k,l])=>t.appendChild(btn(l,(cur?cur.d[3]:temp)===k,()=>{temp=k;if(k==="i"&&size==="Short")size="Tall";cur=null;renderAll()})));
- const cats=[...new Set(D.map(d=>d[2]))];const c=$("cats");c.innerHTML="";cats.forEach(k=>c.appendChild(btn(k,k===cat,()=>{cat=k;renderLeft()})));
- const g=$("drinks");g.innerHTML="";D.filter(d=>d[2]===cat).forEach(d=>{const b=btn("",cur&&cur.d===d,()=>pick(d));b.innerHTML=`${d[0]}<small>${d[3]==="h"?"Hot":"Iced"} · from ${money(PRICE[d[8]][0])}</small>`;g.appendChild(b)})}
-function renderMods(){const m=$("mods");const dis=!cur;
- $("decaf").innerHTML="";["Regular","Half-caf","Decaf"].forEach(x=>$("decaf").appendChild(btn(x,cur&&cur.decaf===x,()=>{cur.decaf=x;renderAll()},dis)));
- const sh=$("shots");sh.innerHTML="";if(cur){const r=document.createElement("div");r.className="step";r.innerHTML=`<span>Espresso shots</span>`;
-  r.appendChild(btn("−",0,()=>{cur.shots=Math.max(0,cur.shots-1);renderAll()}));const n=document.createElement("span");n.className="n";n.textContent=cur.shots;r.appendChild(n);
-  r.appendChild(btn("+",0,()=>{cur.shots++;renderAll()}));sh.appendChild(r)}else sh.innerHTML='<p class="muted">Pick a drink first.</p>';
- const sy=$("syrups");sy.innerHTML="";if(cur){Object.keys(cur.syr).forEach(k=>{const r=document.createElement("div");r.className="step";r.innerHTML=`<span>${k}</span>`;
-   r.appendChild(btn("−",0,()=>{cur.syr[k]--;if(cur.syr[k]<=0)delete cur.syr[k];renderAll()}));const n=document.createElement("span");n.className="n";n.textContent=cur.syr[k];r.appendChild(n);
-   r.appendChild(btn("+",0,()=>{cur.syr[k]++;renderAll()}));r.appendChild(btn("✕",0,()=>{delete cur.syr[k];renderAll()}));sy.appendChild(r)});
-  const add=document.createElement("div");add.className="row";SYRUPS.filter(x=>!(x in cur.syr)).forEach(x=>add.appendChild(btn("+ "+x,0,()=>{cur.syr[x]=P[cur.d[3]==="h"?"hot":"iced"][si()]||1;renderAll()})));sy.appendChild(add)}
- $("milks").innerHTML="";MILKS.forEach(x=>$("milks").appendChild(btn(x+(PLANT.includes(x)?" +40p":""),cur&&cur.milk===x,()=>{cur.milk=x;renderAll()},dis)));
- $("custom").innerHTML="";CUSTOM.forEach(x=>{const iceOnly=/ice/i.test(x),hotOnly=/hot|Warm|foam$|Kids/.test(x)&&!/Cold/.test(x);
-  const bad=cur&&((iceOnly&&cur.d[3]==="h")||(hotOnly&&cur.d[3]==="i"));
-  $("custom").appendChild(btn(x,cur&&cur.custom.has(x),()=>{cur.custom.has(x)?cur.custom.delete(x):cur.custom.add(x);renderAll()},dis||bad))});
- $("preview").innerHTML=cur?labelHTML(cur,size,$("cname").value,money(price(cur))):'<p class="muted">Label appears here.</p>';
- $("addBtn").disabled=dis;$("checkBtn").style.display=target?"":"none";$("checkBtn").disabled=dis;
- $("target").innerHTML=target?`<div class="msg info"><b>Customer:</b> “${target.text}”</div>`:""}
-function renderOrder(){const o=$("order");o.innerHTML=order.length?"":'<p class="muted">No items yet.</p>';
- order.forEach((it,i)=>{const r=document.createElement("div");r.className="item";
-  const mods=labelLines(it,it.size).filter(([k,v])=>v&&k!=="DRINK").map(([k,v])=>v).join(" · ");
-  r.innerHTML=`<div>${it.size} ${it.d[0]}<br><small>${mods||"standard"}</small></div><b>${money(price(it))}</b>`;r.appendChild(btn("✕",0,()=>{order.splice(i,1);renderAll()}));o.appendChild(r)});
- const tot=order.reduce((a,it)=>a+price(it),0);$("total").textContent=money(tot);$("mtot").textContent=money(tot)+" · "+order.length+" item"+(order.length===1?"":"s");
- $("dine").innerHTML="";["Eat in","Take away"].forEach(x=>$("dine").appendChild(btn(x,dine===x,()=>{dine=x;renderAll()})));
- const c=$("cashBtns");c.innerHTML="";const opts=[...new Set([Math.ceil(tot),5,10,20,50].filter(v=>v>=tot&&tot>0))];
- opts.forEach(v=>c.appendChild(btn("Cash £"+v,0,()=>pay("cash",v))));
- $("cardBtn").disabled=$("appBtn").disabled=!order.length;$("voidBtn").disabled=!order.length}
-function renderAll(){renderLeft();renderMods();renderOrder()}
-function addItem(){if(!cur)return;cur.size=size;order.push(cur);cur=null;renderAll();go("leftP")}
-function pay(type,v){const tot=order.reduce((a,it)=>a+price(it),0);const name=$("cname").value;
- const msg=type==="cash"?`Paid ${money(v)} cash · <b>Change: ${money(v-tot)}</b>`:type==="card"?"Card approved":"Paid with app";
- $("payMsg").innerHTML=`<div class="msg ok">${msg} · ${dine}</div>`;
- $("labels").innerHTML=order.map((it,i)=>labelHTML(it,it.size,name,`${i+1}/${order.length}`)).join("")+$("labels").innerHTML;
- order=[];$("cname").value="";renderAll()}
-// ---- practice mode ----
+/* ---------- STATE ---------- */
+let pre={size:"Grande",iced:false,blonde:false,decaf:false},order=[],sel=-1,panel="drinks",tab="Drinks",target=null,score={ok:0,n:0},lastPaid=null;
+const $=id=>document.getElementById(id);const cur=()=>order[sel];
+const sizeIdx=s=>SIZES.indexOf(s);
+const canIce=d=>d.t!=="h",canHot=d=>d.t!=="i";
+function defShots(d,size,iced){return SH[d.sh][iced?"i":"h"][sizeIdx(size)]}
+function defPumps(d,size,iced,p){return (PU[p||d.pu]||PU.hot)[iced?"i":"h"][sizeIdx(size)]||1}
+function makeItem(d,size,iced,blonde,decaf){if(!canHot(d))iced=true;if(!canIce(d))iced=false;if(iced&&size==="Short")size="Tall";
+ const it={d,size,iced,esp:blonde?"Blonde":"Sig",decaf:decaf?"Decaf":"",shots:defShots(d,size,iced),syr:{},milk:d.milk,mods:{}};
+ if(d.syr)it.syr[d.syr]=defPumps(d,size,iced);Object.assign(it.mods,d.top);d.prep.forEach(p=>it.mods[p]=1);
+ if(iced){["Foam","Wet","Dry"].forEach(p=>delete it.mods[p]);if(!it.mods["Blended"]&&!it.mods["Ice"])it.mods["Ice"]=1}return it}
+function resize(it,size,iced){const od=defShots(it.d,it.size,it.iced);if(iced&&size==="Short")size="Tall";
+ const nd=defShots(it.d,size,iced);it.shots=it.shots===od?nd:Math.max(0,it.shots+nd-od);
+ for(const k in it.syr){const o=defPumps(it.d,it.size,it.iced,k===it.d.syr?null:"hot");if(it.syr[k]===o)it.syr[k]=defPumps(it.d,size,iced,k===it.d.syr?null:"hot")}
+ if(iced!==it.iced){if(iced){["Foam","Wet","Dry","Extra Dry","Extra Hot","Warm"].forEach(p=>delete it.mods[p]);if(!it.mods["Blended"])it.mods["Ice"]=1}else{["Ice","Light Ice","Extra Ice","Shaken"].forEach(p=>delete it.mods[p])}}
+ it.size=size;it.iced=iced}
+function price(it){const d=it.d;let p=d.pg+[-0.60,-0.40,0,0.35][sizeIdx(it.size)];
+ if(d.col==="Espresso"&&d.code==="E"||d.code==="EM")p=d.pg+(it.shots>=2?0:-0.30);
+ const base=makeItem(d,it.size,it.iced,false,false);
+ p+=Math.max(0,it.shots-base.shots)*PRICE.shot;
+ for(const k in it.syr)if(!(k in base.syr))p+=PRICE.syrup;
+ for(const k in it.mods){if(base.mods[k])continue;if(/Cold Foam/.test(k))p+=PRICE.coldfoam*it.mods[k];else if(TOP.some(c=>c[2].includes(k)))p+=PRICE.top*it.mods[k]}
+ return Math.max(0,p)}
+const money=n=>n.toFixed(2);
+function codes(it){const syr=Object.entries(it.syr).map(([k,v])=>v+(SYRUPS.find(s=>s[0]===k)||[0,k])[1]).join(" ");
+ const milk=(MILKS.find(m=>m[0]===it.milk)||[0,it.milk])[1];
+ const cus=Object.entries(it.mods).map(([k,v])=>(v>1?v:"")+ab(k)).filter(Boolean).join(" ");
+ return{decaf:it.decaf==="Decaf"?"X":it.decaf?"½X":"",shots:(it.esp==="Blonde"?"B":"")+(it.shots||""),syr,milk:it.d.milk==="None"&&it.milk==="None"?"":milk,cus,drink:(it.iced&&!/^Iced|Frapp|Cold|Refresha|Aerocano/.test(it.d.n)?"I":"")+it.d.code}}
+
+/* ---------- RENDER ---------- */
+function render(){renderLeft();renderStrip();renderTabs();renderArea();$("pay").querySelector(".t").textContent=money(order.reduce((a,i)=>a+price(i),0))}
+function renderLeft(){let h="";order.forEach((it,i)=>{const s=i===sel?" sel":"";
+ h+=`<div class="ln${s}" data-a="selline" data-v="${i}"><span><span class="q">${i+1}</span>${SAB[it.size]} ${it.iced&&canHot(it.d)?"Iced ":""}${it.d.n}</span><span>${money(price(it))}</span></div>`;
+ const sub=[];sub.push(it.mods["For Here Cup"]?"For Here Cup":it.mods["Own Cup"]?"Own Cup":"Takeaway Cup");
+ if(it.shots)sub.push(`${it.shots} ${it.decaf?it.decaf+" ":""}${it.esp} Espresso`);
+ for(const k in it.syr)sub.push(`${it.syr[k]} ${k}`);if(it.milk!=="None")sub.push(it.milk);
+ for(const k in it.mods)if(!["For Here Cup","Own Cup"].includes(k))sub.push((it.mods[k]>1?it.mods[k]+" ":"")+k);
+ sub.forEach(x=>h+=`<div class="ln sub${s}" data-a="selline" data-v="${i}"><span>${x}</span></div>`)});
+ $("lines").innerHTML=h;
+ const t=$("target");if(target){t.style.display="block";t.innerHTML=`<b>Customer:</b> “${target.text}”<div class="r">${target.msg||"Ring it up, then press Functions → Check."}</div>`}else t.style.display="none"}
+function renderStrip(){const it=cur(),on=!!it;document.body.classList.toggle("strip",on);
+ $("strip").style.display=on?"block":"none";["wingL","wingR"].forEach(w=>$(w).style.display=on?"flex":"none");if(!on)return;const c=codes(it);
+ $("strip").innerHTML=`<select class="pill" data-ch="size">${SIZES.map(s=>`<option ${s===it.size?"selected":""} ${it.iced&&s==="Short"?"disabled":""}>${s}</option>`).join("")}</select>
+ <div style="height:14px"></div><button class="pill ${it.iced?"on":""}" data-a="itIced"><span class="dot"></span>Iced</button>
+ <label>Decaf</label><button class="box" data-a="decaf">${c.decaf}</button>
+ <label>Shots</label><div class="pm"><button data-a="shot" data-v="-1">−</button><span>${c.shots||"0"}</span><button data-a="shot" data-v="1">+</button></div>
+ <label>Syrups</label><div class="pm"><button data-a="pump" data-v="-1">−</button><span data-a="panel" data-v="syrups" style="cursor:pointer">${c.syr}</span><button data-a="pump" data-v="1">+</button></div>
+ <label>Milk</label><button class="box" data-a="panel" data-v="milk">${c.milk}</button>
+ <label>Custom</label><button class="box" data-a="panel" data-v="toppings" style="font-size:${c.cus.length>9?10:14}px">${c.cus}</button>
+ <div class="tree"><button data-a="panel" data-v="toppings">Toppings...</button><button data-a="panel" data-v="prep">Prep...</button></div>
+ <label>Drink</label><button class="box" data-a="panel" data-v="drinks">${c.drink}</button>`;
+ const q=(l,c,a,v,o,tip)=>`<button style="background:${c}" class="${o?"on":""}" data-a="${a}" data-v="${v}" title="${tip}">${l}</button>`;
+ $("wingL").innerHTML=q("Sig","#a0583a","esp","Sig",it.esp==="Sig","Signature espresso")+q("C","#a04a3e","qsyr","Caramel","Caramel" in it.syr,"Caramel syrup")+q("N","#9a8a4a","qmilk","Skimmed",it.milk==="Skimmed","Skimmed milk")+q("XH","#8a5a7a","qmod","Extra Hot",it.mods["Extra Hot"],"Extra hot");
+ $("wingR").innerHTML=q("B","#b5542a","esp","Blonde",it.esp==="Blonde","Blonde espresso")+q("V","#9a3e36","qsyr","Vanilla","Vanilla" in it.syr,"Vanilla syrup")+q("O","#9a7a3a","qmilk","Oat",it.milk==="Oat","Oat milk")+q("WC","#7a4a6a","qmod","Whipped Cream",it.mods["Whipped Cream"],"Whipped cream")}
+function renderTabs(){$("tabs").innerHTML=`<button class="srch" data-a="tab" data-v="Search">🔍</button>`+["Drinks","Bakery","Chilled","Impulse","Lobby","Gift Card"].map(t=>`<button class="${t===tab&&panel==="drinks"?"on":""}" data-a="tab" data-v="${t}">${t}</button>`).join("")}
+function lerp(a,b,t){const p=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));const x=p(a),y=p(b);return"#"+x.map((v,i)=>Math.round(v+(y[i]-v)*t).toString(16).padStart(2,"0")).join("")}
+function renderArea(){const A=$("area");
+ if(panel==="drinks"&&tab!=="Drinks"){A.innerHTML=`<div class="panel" style="background:#2a2a2d;color:#ccc"><div class="wm">${tab}</div><p style="margin-top:60px;text-align:center">${tab} isn't set up in this practice till — drinks only.</p></div>`;return}
+ if(panel==="drinks"){const it=cur();
+  let h=`<div id="pre"><div class="seg">${SIZES.map(s=>`<button class="${pre.size===s?"on":""}" data-a="pre" data-v="${s}">${s}</button>`).join("")}</div>
+  <button class="tg ${pre.iced?"on":""}" data-a="preT" data-v="iced"><span class="dot"></span>Iced</button>
+  <button class="tg ${pre.blonde?"on":""}" data-a="preT" data-v="blonde">Blonde</button><button class="tg ${!pre.blonde?"on":""}" data-a="preT" data-v="sig">Signature</button>
+  <button class="tg ${pre.decaf?"on":""}" data-a="preT" data-v="decaf">Decaf</button></div><div id="grid">`;
+  COLS.forEach(([n,span])=>h+=`<div class="ch" style="grid-column:span ${span}">${n}</div>`);
+  const cells=Array.from({length:5},()=>[]);
+  COLS.forEach(([n,span,cl])=>{const ds=D.filter(d=>d.col===n);for(let r=0;r<5;r++)for(let s=0;s<span;s++){const d=ds[r*span+s];cells[r].push(d?{d,c:lerp(cl[0],cl[1],r/4)}:null)}});
+  cells.forEach(row=>row.forEach(x=>h+=x?`<button class="tile" style="background:linear-gradient(${x.c},${lerp(x.c,"#000000",.12)})" data-a="drink" data-v="${D.indexOf(x.d)}">${x.d.n}</button>`:`<div class="tile blank"></div>`));
+  h+=`<div class="seas">Seasonal</div>`;let si=0;DR.slice(DR.findIndex(d=>d[2]==="S")).forEach((d,i)=>{if(!d[0]){h+=`<div class="tile blank"></div>`;return}
+   const dd=D.find(x=>x.n===d[0]);h+=`<button class="tile" style="background:linear-gradient(${SEAS_C[i]||"#4e3c31"},${lerp(SEAS_C[i]||"#4e3c31","#000000",.2)});font-size:${d[0].length>22?14:16}px" data-a="drink" data-v="${D.indexOf(dd)}">${d[0]}</button>`});
+  A.innerHTML=h+`</div>`;return}
+ const it=cur();if(!it){panel="drinks";return renderArea()}
+ if(panel==="toppings"){let h=`<div class="panel"><div class="wm">Toppings</div><div class="cols">`;
+  TOP.forEach(([t,c,items])=>{h+=`<div class="col"><h5>${t||"&nbsp;"}</h5><div class="g">`;items.forEach(x=>{if(!x){h+=`<div style="height:70px"></div>`;return}
+   const n=it.mods[x]||0;const col=/Protein/.test(x)?"#7c9e6b":/Drizzle/.test(x)?"#6f9b8f":/Apple|Strawberry Cream|Matcha Cream/.test(x)&&/Foam/.test(x)?"#719a86":c;
+   h+=`<div class="mt ${UNAVAIL.has(x)?"x":""}" style="background:${col}"><b data-a="top" data-v="${x}" data-d="-1">−</b><span>${x}</span><b data-a="top" data-v="${x}" data-d="1">+</b>${n?`<i class="n">${n}</i>`:""}</div>`});h+=`</div></div>`});
+  A.innerHTML=h+`</div><button id="allergy" data-a="allergy">Allergy Notification</button></div>`;return}
+ if(panel==="prep"){let h=`<div class="panel"><div class="wm">Prep</div><div class="cols" style="gap:8px">`;
+  PREP.forEach(([t,items])=>{h+=`<div class="col"><h5 style="font-size:${t.length>11?17:19}px">${t||"&nbsp;"}</h5><div class="g">`;
+   items.forEach(([x,c])=>{if(!c){h+=`<div style="height:${x===" "?144:78}px"></div>`;return}h+=`<button class="pt ${it.mods[x]?"on":""}" style="background:${c}" data-a="prep" data-v="${x}">${x}</button>`});h+=`</div></div>`});
+  A.innerHTML=h+`</div><button id="allergy" data-a="allergy">Allergy Notification</button></div>`;return}
+ if(panel==="milk"){let h=`<div class="panel"><div class="wm">Milk</div><div class="cols" style="flex-wrap:wrap;gap:10px;margin-top:40px">`;
+  MILKS.forEach(([m,c])=>h+=`<button class="pt ${it.milk===m?"on":""}" style="background:${["Oat","Almond","Soy","Coconut"].includes(m)?"#9a8a4a":"#8295a6"};width:150px" data-a="milk" data-v="${m}">${m}<br><small>${c}</small></button>`);
+  A.innerHTML=h+`</div></div>`;return}
+ if(panel==="syrups"){let h=`<div class="panel"><div class="wm">Syrups</div><p style="margin:34px 0 6px;color:#555">Tap + / − to add pumps. Default pumps for ${it.size}: ${defPumps(it.d,it.size,it.iced,"hot")}.</p><div class="cols" style="flex-wrap:wrap;gap:10px;margin-top:6px">`;
+  SYRUPS.forEach(([s,c])=>{const n=it.syr[s]||0;h+=`<div class="mt" style="background:${/Mocha|Chai|Pumpkin/.test(s)?"#8a5a3a":"#a0583a"}"><b data-a="syr" data-v="${s}" data-d="-1">−</b><span>${s}<br><small>${c}</small></span><b data-a="syr" data-v="${s}" data-d="1">+</b>${n?`<i class="n">${n}</i>`:""}</div>`});
+  A.innerHTML=h+`</div></div>`;return}}
+
+/* ---------- ACTIONS ---------- */
+function modal(html){const m=$("modal");m.innerHTML=`<div class="mbox">${html}</div>`;m.style.display=html?"flex":"none"}
+function labelHTML(it,n,tot){const c=codes(it);return `<div class="lbl"><div style="display:flex;justify-content:space-between;font-weight:700;border-bottom:1px solid #ccc"><span>${SAB[it.size]} ${it.d.n.slice(0,18)}</span><span>${n}/${tot}</span></div>
+ ${[["DECAF",c.decaf],["SHOTS",c.shots],["SYRUP",c.syr],["MILK",c.milk],["CUSTOM",c.cus],["DRINK",c.drink]].map(([k,v])=>`<div class="l"><i>${k}</i><span>${v||""}</span></div>`).join("")}</div>`}
+function excl(it,x){EXCL.forEach(g=>{if(g.includes(x))g.forEach(y=>{if(y!==x)delete it.mods[y]})})}
+document.addEventListener("click",e=>{const el=e.target.closest("[data-a]");if(!el)return;const a=el.dataset.a,v=el.dataset.v,it=cur();
+ switch(a){
+ case"rotx":$("rot").style.display="none";try{sessionStorage.setItem("rotx",1)}catch(_){}return;
+ case"tab":tab=v==="Search"?"Drinks":v;panel="drinks";break;
+ case"pre":pre.size=v;if(it){resize(it,v,it.iced)}break;
+ case"preT":if(v==="iced")pre.iced=!pre.iced;if(v==="blonde")pre.blonde=true;if(v==="sig")pre.blonde=false;if(v==="decaf")pre.decaf=!pre.decaf;break;
+ case"drink":{const d=D[+v];order.push(makeItem(d,pre.size,pre.iced,pre.blonde,pre.decaf));sel=order.length-1;pre.iced=false;pre.blonde=false;pre.decaf=false;break}
+ case"selline":sel=+v;panel="drinks";break;
+ case"del":if(sel>=0){order.splice(sel,1);sel=order.length-1}break;
+ case"itIced":if(it&&canIce(it.d)&&canHot(it.d))resize(it,it.size,!it.iced);break;
+ case"decaf":if(it)it.decaf=it.decaf===""?"Decaf":it.decaf==="Decaf"?"1/2 Decaf":"";break;
+ case"shot":if(it)it.shots=Math.max(0,it.shots+ +v);break;
+ case"pump":if(it){const k=Object.keys(it.syr).pop();if(!k){panel="syrups";break}it.syr[k]+= +v;if(it.syr[k]<=0)delete it.syr[k]}break;
+ case"panel":if(it)panel=v;break;
+ case"esp":if(it)it.esp=v;break;
+ case"qsyr":if(it){if(v in it.syr)delete it.syr[v];else it.syr[v]=defPumps(it.d,it.size,it.iced,"hot")}break;
+ case"qmilk":if(it)it.milk=it.milk===v?it.d.milk:v;break;
+ case"qmod":if(it){if(it.mods[v])delete it.mods[v];else{excl(it,v);it.mods[v]=1}}break;
+ case"top":if(it&&!UNAVAIL.has(v)){const n=(it.mods[v]||0)+ +el.dataset.d;if(n<=0)delete it.mods[v];else it.mods[v]=n}break;
+ case"prep":if(it){if(it.mods[v])delete it.mods[v];else{excl(it,v);it.mods[v]=1}}break;
+ case"milk":if(it)it.milk=v;break;
+ case"syr":if(it){const n=(it.syr[v]||0)+(+el.dataset.d);if(n<=0)delete it.syr[v];else it.syr[v]=it.syr[v]?n:Math.max(n,el.dataset.d>0?defPumps(it.d,it.size,it.iced,"hot"):0)}break;
+ case"allergy":modal(`<h3>Allergy Notification</h3><p>In store: tell the customer about allergens, check the allergen guide, use clean equipment and flag the drink to the bar.</p><div class="row"><button class="pri" data-a="close">OK</button></div>`);return;
+ case"fn":modal(`<h3>Functions</h3><div class="row"><button class="pri" data-a="practice">${target?"Stop practice":"🎯 Start practice order"}</button>${target?`<button class="pri" data-a="check">✓ Check my order</button><button data-a="skip">Skip</button>`:""}</div>
+  <div class="row"><button data-a="clear">Clear order</button><button data-a="help">Button guide</button><button data-a="close">Close</button></div>${score.n?`<p>Practice score: <b>${score.ok}/${score.n}</b></p>`:""}`);return;
+ case"help":modal(`<h3>Button guide</h3><p><b>Sig / B</b> Signature / Blonde espresso · <b>C / V</b> caramel / vanilla syrup · <b>N / O</b> skimmed / oat milk · <b>XH</b> extra hot · <b>WC</b> whipped cream.</p><p>Pick size (and Iced / Blonde / Decaf) at the top first, then tap the drink. Change it in the grey strip. <b>Toppings…</b> and <b>Prep…</b> open the custom screens. Tap the Milk box or the syrup number for the full lists. Tap <b>Drink</b> to go back to drinks.</p><p style="color:#666">Practice till — prices and codes are approximations.</p><div class="row"><button class="pri" data-a="close">OK</button></div>`);return;
+ case"close":modal("");return;
+ case"clear":order=[];sel=-1;panel="drinks";modal("");break;
+ case"practice":modal("");if(target){target=null}else{newTarget()}break;
+ case"skip":modal("");newTarget();break;
+ case"check":modal("");check();break;
+ case"pay":{if(!order.length)return;const tot=order.reduce((a,i)=>a+price(i),0);
+  const cash=[...new Set([Math.ceil(tot),5,10,20,50].filter(x=>x>=tot))];
+  modal(`<h3>Pay £${money(tot)}</h3><div class="row">${cash.map(c=>`<button data-a="paid" data-v="${c}">Cash £${c}</button>`).join("")}</div><div class="row"><button class="pri" data-a="paid" data-v="card">💳 Card / Contactless</button><button class="pri" data-a="paid" data-v="app">📱 App</button><button data-a="close">Back</button></div>`);return}
+ case"paid":{const tot=order.reduce((a,i)=>a+price(i),0);const msg=v==="card"?"Card approved":v==="app"?"Paid with app":`Cash £${v} — <b>Change £${money(+v-tot)}</b>`;
+  const labels=order.map((it,i)=>labelHTML(it,i+1,order.length)).join("");order=[];sel=-1;panel="drinks";
+  modal(`<h3>✓ ${msg}</h3><p>Cup labels printed:</p>${labels}<div class="row"><button class="pri" data-a="close">New order</button></div>`);render();return}
+ }
+ render()});
+document.addEventListener("change",e=>{if(e.target.dataset.ch==="size"&&cur()){resize(cur(),e.target.value,cur().iced);render()}});
+
+/* ---------- PRACTICE ---------- */
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
-function newTarget(){const d=rnd(D);const sizes=sizesFor(d[3]);const sz=rnd(sizes);size=sz;const t=defaults(d);t.size=sz;const parts=[];
- if(Math.random()<.2){t.decaf=rnd(["Decaf","Half-caf"]);parts.push(t.decaf.toLowerCase())}
- if(Math.random()<.35&&t.d[7]!=="None"){t.milk=rnd(["Oat","Almond","Soy","Skimmed","Whole","Coconut"].filter(m=>m!==d[7]));parts.push("with "+t.milk.toLowerCase()+" milk")}
- if(Math.random()<.3&&S[d[4]][0]!==undefined&&t.shots>0){t.shots++;parts.push("an extra shot")}
- if(Math.random()<.3){const s=rnd(["Vanilla","Caramel","Hazelnut","SF Vanilla","Cinnamon Dolce"].filter(x=>!(x in t.syr)));t.syr[s]=P[d[3]==="h"?"hot":"iced"][sizes.indexOf(sz)];parts.push(s.toLowerCase()+" syrup")}
- if(Math.random()<.3){const opts=CUSTOM.filter(x=>d[3]==="h"?["Extra hot","Extra foam","Whip","No whip","Caramel drizzle"].includes(x):["Light ice","Extra ice","Cold foam","Whip","Caramel drizzle"].includes(x)).filter(x=>!t.custom.has(x)&&!(x==="No whip"&&!t.custom.has("Whip")));
-  if(opts.length){const c=rnd(opts);t.custom.add(c);parts.push(c.toLowerCase())}}
- if(t.custom.has("Whip")&&Math.random()<.15&&d[9].includes("Whip")){t.custom.delete("Whip");parts.push("no whip")}
- t.text=`Can I get a ${sz} ${d[0]}${parts.length?", "+parts.join(", "):""}, please?`;target=t;cur=null;temp=d[3];cat=d[2];renderAll()}
-function check(){const t=target,c=cur,errs=[];
- if(c.d!==t.d)errs.push(`Drink should be ${t.d[0]}`);if(size!==t.size)errs.push(`Size should be ${t.size}`);
- if(c.decaf!==t.decaf)errs.push(`Decaf: ${t.decaf}`);if(c.shots!==t.shots)errs.push(`Shots should be ${t.shots}`);
- const sj=o=>JSON.stringify(Object.entries(o).sort());if(sj(c.syr)!==sj(t.syr))errs.push(`Syrup should be ${Object.entries(t.syr).map(([k,v])=>v+" "+k).join(", ")||"none"}`);
- if(c.milk!==t.milk)errs.push(`Milk should be ${t.milk}`);
- const cs=[...c.custom].sort().join(),ts=[...t.custom].sort().join();if(cs!==ts)errs.push(`Custom should be: ${[...t.custom].join(", ")||"none"}`);
- score.n++;if(!errs.length)score.ok++;$("score").textContent=`Score ${score.ok}/${score.n}`;
- $("target").innerHTML=`<div class="msg info"><b>Customer:</b> “${t.text}”</div>`+(errs.length?`<div class="msg bad">✗ ${errs.join("<br>✗ ")}</div>`:`<div class="msg ok">✓ Perfect — ${money(price(Object.assign(c,{size})))}. Next one!</div>`);
- if(!errs.length){c.size=size;order.push(c);cur=null;target=null;setTimeout(newTarget,1400);renderLeft();renderOrder();$("checkBtn").style.display="none"}}
-$("addBtn").onclick=()=>{if(target)return check();addItem()};$("checkBtn").onclick=check;$("resetBtn").onclick=()=>{if(cur){cur=defaults(cur.d);renderAll()}};
-$("pBtn").onclick=()=>{if(target){target=null;$("pBtn").textContent="🎯 Practice order";renderAll()}else{$("pBtn").textContent="Stop practice";newTarget()}};
-$("cardBtn").onclick=()=>pay("card");$("appBtn").onclick=()=>pay("app");$("voidBtn").onclick=()=>{order=[];$("payMsg").innerHTML="";renderAll()};
-$("mOrder").onclick=()=>go("orderP");$("mDrinks").onclick=()=>go("leftP");
-$("cname").oninput=renderMods;renderAll();
+function newTarget(){const d=rnd(D.filter(x=>x.col!=="S"||Math.random()<.5));let size=rnd(d.t==="i"?["Tall","Grande","Venti"]:SIZES.slice(d.code==="E"||d.code==="EM"?0:0));
+ if(d.code==="E"||d.code==="EM")size="Short";let iced=d.t==="i"||(d.t==="b"&&Math.random()<.3);if(iced&&size==="Short")size="Tall";
+ const t=makeItem(d,size,iced,false,false),p=[];
+ const r=Math.random;
+ if(t.shots&&r()<.2){t.esp="Blonde";p.push("blonde")}
+ if(t.shots&&r()<.15){t.decaf="Decaf";p.push("decaf")}
+ if(t.d.milk!=="None"&&r()<.4){t.milk=rnd(["Oat","Almond","Soy","Skimmed","Whole","Coconut"].filter(m=>m!==t.milk));p.push(t.milk.toLowerCase()+" milk")}
+ if(t.shots&&r()<.3){t.shots++;p.push("an extra shot")}
+ if(r()<.3){const s=rnd(["Vanilla","Caramel","Hazelnut","SF Vanilla","Toffee Nut"].filter(x=>!(x in t.syr)));t.syr[s]=defPumps(d,size,iced,"hot");p.push(s.toLowerCase()+" syrup")}
+ if(r()<.35){const opts=iced?["Light Ice","Extra Ice","Cream Cold Foam","Caramel Drizzle","Whipped Cream"]:["Extra Hot","Dry","Caramel Drizzle","Whipped Cream","For Here Cup"];const x=rnd(opts.filter(o=>!t.mods[o]));
+  if(x){excl(t,x);t.mods[x]=1;p.push(x.toLowerCase()+(x==="For Here Cup"?" (drinking in)":""))}}
+ if(t.mods["Whipped Cream"]&&d.top["Whipped Cream"]&&r()<.2){delete t.mods["Whipped Cream"];p.push("no whip")}
+ const nm=(iced&&canHot(d)?"iced ":"")+d.n;
+ t.text=`Hi, can I get a ${d.code==="E"||d.code==="EM"?"":size+" "}${nm}${p.length?", "+p.join(", "):""}, please?`;target=t;order=[];sel=-1;panel="drinks";tab="Drinks";pre={size:"Grande",iced:false,blonde:false,decaf:false}}
+function check(){const t=target,it=cur()||order[order.length-1],errs=[];if(!it){t.msg=`<span class="bad">Nothing rung up yet.</span>`;return}
+ if(it.d!==t.d)errs.push(`Drink: ${t.d.n}`);if(it.size!==t.size&&!(t.d.code==="E"||t.d.code==="EM"))errs.push(`Size: ${t.size}`);if(it.iced!==t.iced)errs.push(t.iced?"Should be iced":"Should be hot");
+ if(it.shots!==t.shots)errs.push(`Shots: ${t.shots}`);if(it.esp!==t.esp)errs.push(`Espresso: ${t.esp}`);if(it.decaf!==t.decaf)errs.push(`Decaf: ${t.decaf||"no"}`);
+ const j=o=>JSON.stringify(Object.entries(o).sort());if(j(it.syr)!==j(t.syr))errs.push(`Syrup: ${Object.entries(t.syr).map(([k,v])=>v+" "+k).join(", ")||"none"}`);
+ if(it.milk!==t.milk)errs.push(`Milk: ${t.milk}`);if(j(it.mods)!==j(t.mods))errs.push(`Custom: ${Object.keys(t.mods).join(", ")||"none"}`);
+ score.n++;if(!errs.length){score.ok++;const m=`<span class="ok">✓ Perfect! £${money(price(it))} · score ${score.ok}/${score.n}</span>`;setTimeout(()=>{newTarget();target.msg=m;render()},900);t.msg=m}
+ else t.msg=`<span class="bad">✗ ${errs.join("<br>✗ ")}</span><br>Score ${score.ok}/${score.n}`}
+
+/* ---------- SCALE ---------- */
+function fit(){const w=innerWidth,h=innerHeight,s=Math.min(w/1280,h/800);const st=$("stage");st.style.transform=`scale(${s})`;st.style.left=(w-1280*s)/2+"px";st.style.top=(h-800*s)/2+"px";
+ let x=0;try{x=sessionStorage.getItem("rotx")}catch(_){}$("rot").style.display=(h>w&&w<700&&!x)?"block":"none"}
+addEventListener("resize",fit);fit();
+const tick=()=>$("clock").textContent=new Date().toLocaleString("en-GB",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});tick();setInterval(tick,1000);
+render();
 </script></body></html>
